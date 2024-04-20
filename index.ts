@@ -11,11 +11,8 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 4000;
 
-console.log(`[init]: env: ${config.ENV}`);
-console.log(`[init]: config.isProd: ${config.isProd}`);
-console.log(`[init]: config.isDev: ${config.isDev}`);
-console.log(`[init]: config.isLocal: ${config.isLocal}`);
-console.log(`[init]: Server is running at http://localhost:${port}`);
+console.log(`[index.ts]: Running on "${config.ENV}" environment`);
+console.log(`[index.ts]: Server is running at http://localhost:${port}`);
 
 // Configure express
 app.use(express.json()); // Informs express to recognise incoming request object as JSON object

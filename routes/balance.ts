@@ -1,9 +1,9 @@
 import express, { Router } from 'express';
-import { getTokenBalance } from '../controllers/balance';
+import { getBalance } from '../controllers/balance';
 
 const router: Router = express.Router();
 
-// /balance/:address
-router.route('/:address').get(getTokenBalance);
+// /balance/:walletAddress
+router.route('/:walletAddress').get(getBalance);
 
 export default router;
