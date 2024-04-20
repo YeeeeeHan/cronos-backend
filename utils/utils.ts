@@ -1,5 +1,6 @@
 import { BigNumber, ethers } from 'ethers';
 
+// Rounds down the number to the specified decimal places
 function roundDown(number: number, decimalPlaces: number) {
   const factor = Math.pow(10, decimalPlaces);
   return Math.floor(number * factor) / factor;

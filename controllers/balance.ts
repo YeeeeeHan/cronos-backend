@@ -1,6 +1,11 @@
 import { ethers } from 'ethers';
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
+import {
+  InvalidWalletAddressError,
+  MissingInputError,
+} from '../errors/customErrors';
+import { isValidAddress } from '../middlewares/address';
 import { getCROBalance } from '../service/web3';
 import { parseBalance } from '../utils/utils';
 
@@ -12,19 +17,33 @@ const getBalance = asyncHandler(async (req: Request, res: Response) => {
 
   const { walletAddress } = req.params;
 
+  // Check if the wallet address and token address are empty
   if (!walletAddress) {
     res.status(400);
-    throw new Error('[getBalance] Invalid address or token address');
+    throw new MissingInputError('walletAddress is missing');
   }
 
-  // Get the balance of the CRO token for the given address
-  const balance = await getCROBalance(walletAddress);
+  // Validate the wallet address and token address
+  if (!isValidAddress(walletAddress)) {
+    res.status(400);
+    throw new InvalidWalletAddressError(walletAddress);
+  }
 
-  res.status(200).json({
-    walletAddress,
-    balance,
-    formatBalance: parseBalance(ethers.utils.formatEther(balance)),
-  });
+  try {
+    // Get the balance of the CRO token for the given address
+    const balance = await getCROBalance(walletAddress);
+
+    res.status(200).json({
+      walletAddress,
+      balance,
+      formatBalance: parseBalance(ethers.utils.formatEther(balance)),
+    });
+  } catch (e: any) {
+    res.status(400).json({
+      message: 'Unexpected error occurred. Please try again later',
+      error: e,
+    });
+  }
 });
 
 export { getBalance };
