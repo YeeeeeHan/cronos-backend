@@ -11,7 +11,7 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 4000;
 
-console.log(`[init]: env: ${config.env}`);
+console.log(`[init]: env: ${config.ENV}`);
 console.log(`[init]: config.isProd: ${config.isProd}`);
 console.log(`[init]: config.isDev: ${config.isDev}`);
 console.log(`[init]: config.isLocal: ${config.isLocal}`);
