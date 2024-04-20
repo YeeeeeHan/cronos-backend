@@ -26,6 +26,19 @@ app.use(`/${TOKEN_BALANCE}`, tokenBalanceRouter);
 app.get(`/`, (req: Request, res: Response) => {
   res.status(200).json({ message: 'Welcome to Cronons Backend' });
 });
+
+// 3. 404 Middleware
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const error = new NotFoundError(req.originalUrl);
+  res.status(404).json({ error: error.name, errorMessage: error.message });
+});
+
+// 4. Error Handling Middleware
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof CustomError) {
+    return res.status(400).json({ error: err.name, errorMessage: err.message });
+  }
+  res.status(500).json({ error: 'Internal server error' });
 });
 
 app.listen(port, () => {});
