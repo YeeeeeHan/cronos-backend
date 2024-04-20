@@ -9,8 +9,8 @@ import { BALANCE, TOKEN_BALANCE } from './utils/constants';
 
 dotenv.config();
 
-const app: Express = express();
-const port = process.env.PORT || 4000;
+export const app: Express = express();
+export const port = process.env.PORT || 4000;
 
 console.log(`[index.ts]: Running on "${config.ENV}" environment`);
 console.log(`[index.ts]: Running on "${config.CHAIN}" chain`);
