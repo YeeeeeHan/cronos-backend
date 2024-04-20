@@ -6,7 +6,7 @@ export class CustomError extends Error {
   }
 }
 
-// NotFound
+// Error when a resource is not found
 export class NotFoundError extends CustomError {
   constructor(resource: string) {
     super(`Resource not found: ${resource}`);
@@ -20,21 +20,21 @@ export class BadRequestError extends CustomError {
   }
 }
 
-// InvalidInput
+// Error when a required input is missing
 export class MissingInputError extends CustomError {
   constructor(input: string) {
     super(`Missing Input: ${input}`);
   }
 }
 
-// InvalidWalletAddress
+// Error when an invalid wallet address is provided
 export class InvalidWalletAddressError extends CustomError {
   constructor(walletAddress: string) {
     super(`Invalid Wallet Address: ${walletAddress}`);
   }
 }
 
-// InvalidTokenAddress
+// Error when an invalid token address is provided
 export class InvalidTokenAddressError extends CustomError {
   constructor(tokenAddress: string) {
     super(`Invalid Token Address: ${tokenAddress}`);

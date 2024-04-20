@@ -5,7 +5,7 @@ import {
   InvalidWalletAddressError,
   MissingInputError,
 } from '../errors/customErrors';
-import { isValidAddress } from '../middlewares/address';
+import { isValidAddress } from '../middlewares/verifiers';
 import { getCROBalance } from '../service/web3';
 import { parseBalance } from '../utils/utils';
 
