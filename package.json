@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "main": "server.js",
   "scripts": {
+    "dev": "prisma generate && nodemon index.ts",
+    "build": "prisma generate && npx tsc",
+    "start": "node dist/index.js",
     "test": "set PORT=0 && jest --watchAll  --detectOpenHandles"
   },
   "dependencies": {
@@ -26,6 +29,5 @@
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
-  },
   }
 }
