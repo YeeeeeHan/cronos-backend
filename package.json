@@ -6,13 +6,16 @@
     "dev": "prisma generate && nodemon index.ts",
     "build": "prisma generate && npx tsc",
     "start": "node dist/index.js",
-    "test": "set PORT=0 && jest --watchAll  --detectOpenHandles"
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down --volumes",
+    "test": "yarn docker:down && yarn docker:up && sleep 1 && dotenv -e .env.test -- npx prisma migrate dev && dotenv -e .env.test -- jest && yarn docker:down"
   },
   "dependencies": {
     "@prisma/client": "5.7.1",
     "@types/swagger-jsdoc": "^6.0.4",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.1",
+    "dotenv-cli": "^7.4.1",
     "ethers": "^5.7.2",
     "express": "~4.16.1",
     "express-async-handler": "^1.2.0",
