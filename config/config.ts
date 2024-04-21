@@ -14,4 +14,7 @@ export const config = {
   isTest: process.env.CHAIN === TESTNET,
   RPC_MAINNET: process.env.RPC_MAINNET,
   RPC_TESTNET: process.env.RPC_TESTNET,
+
+  // Secrets
+  JWT_SECRET: process.env.JWT_SECRET,
 };

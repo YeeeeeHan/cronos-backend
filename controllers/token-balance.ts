@@ -12,7 +12,7 @@ import { parseBalance } from '../utils/utils';
 
 // @desc    Get CRC20 token balance of an address
 // @route   GET /token-balance/:address/:tokenAddress
-// @access  Public
+// @access  JWT protected
 const getTokenBalance = asyncHandler(async (req: Request, res: Response) => {
   console.log(`[getTokenBalance]: req.params: ${JSON.stringify(req.params)}`);
 

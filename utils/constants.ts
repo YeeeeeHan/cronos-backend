@@ -1,6 +1,7 @@
 // Route constants
 export const BALANCE = 'balance';
 export const TOKEN_BALANCE = 'token-balance';
+export const USERS = 'users';
 
 // ENV constants
 export const LOCAL = 'local';

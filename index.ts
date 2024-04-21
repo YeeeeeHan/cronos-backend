@@ -6,7 +6,8 @@ import { pingDB } from './controllers/ping';
 import { CustomError, NotFoundError } from './errors/customErrors';
 import balanceRouter from './routes/balance';
 import tokenBalanceRouter from './routes/token-balance';
-import { BALANCE, TOKEN_BALANCE } from './utils/constants';
+import userRouter from './routes/user';
+import { BALANCE, TOKEN_BALANCE, USERS } from './utils/constants';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: false })); // Informs express to recognis
 // 2. Router Middleware
 app.use(`/${BALANCE}`, balanceRouter);
 app.use(`/${TOKEN_BALANCE}`, tokenBalanceRouter);
+app.use(`/${USERS}`, userRouter);
 app.get(`/`, (req: Request, res: Response) => {
   res.status(200).json({ message: 'Welcome to Cronons Backend' });
 });

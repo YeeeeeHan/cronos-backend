@@ -11,7 +11,7 @@ import { parseBalance } from '../utils/utils';
 
 // @desc    Get CRO balance of walletAddress
 // @route   GET /balance/:walletAddress/
-// @access  Public
+// @access  JWT protected
 const getBalance = asyncHandler(async (req: Request, res: Response) => {
   console.log(`[getBalance]: req.params: ${JSON.stringify(req.params)}`);
 
