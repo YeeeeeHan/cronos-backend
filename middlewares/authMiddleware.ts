@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
 import { config } from '../config/config';
+import { AuthorizationError } from '../errors/customErrors';
 const prisma = new PrismaClient();
 
 interface AuthRequest extends Request {
@@ -10,18 +11,17 @@ interface AuthRequest extends Request {
 }
 const protect = asyncHandler(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
+    console.log(`[protect]: req.headers: ${JSON.stringify(req.headers)}`);
     if (!req.headers.authorization) {
-      res.status(401);
-      throw new Error('Token is missing');
+      throw new AuthorizationError('No token');
     }
 
     if (!req.headers.authorization.startsWith('Bearer')) {
-      res.status(401);
-      throw new Error('Token format is invalid');
+      throw new AuthorizationError('Invalid token format');
     }
 
     try {
-      // Get token from header - "Bearer xxxx-token"
+      // Get token from header - "Bearer xxxx"
       const token = req.headers.authorization.split(' ')[1];
 
       // Verify token
@@ -39,8 +39,7 @@ const protect = asyncHandler(
       next();
     } catch (error) {
       console.log(error);
-      res.status(401);
-      throw new Error('Not authorized');
+      throw new AuthorizationError('Token verification failed');
     }
   }
 );

@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import {
+  InternalServerError,
   InvalidTokenAddressError,
   InvalidWalletAddressError,
   MissingInputError,
@@ -20,17 +21,14 @@ const getTokenBalance = asyncHandler(async (req: Request, res: Response) => {
 
   // Check if the wallet address and token address are empty
   if (!walletAddress || !tokenAddress) {
-    res.status(400);
     throw new MissingInputError('walletAddress or tokenAddress is missing');
   }
 
   // Validate the wallet address and token address
   if (!isValidAddress(walletAddress)) {
-    res.status(400);
     throw new InvalidWalletAddressError(walletAddress);
   }
   if (!isValidAddress(tokenAddress)) {
-    res.status(400);
     throw new InvalidTokenAddressError(tokenAddress);
   }
 
@@ -50,10 +48,7 @@ const getTokenBalance = asyncHandler(async (req: Request, res: Response) => {
       tokenSymbol: tokenInfo.symbol,
     });
   } catch (e: any) {
-    res.status(400).json({
-      message: 'Unexpected error occurred. Please try again later.',
-      error: e,
-    });
+    throw new InternalServerError('Error occured while fetching token balance');
   }
 });
 

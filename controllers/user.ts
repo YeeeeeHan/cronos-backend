@@ -3,6 +3,11 @@ import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
+import {
+  AuthorizationError,
+  InternalServerError,
+  UserExistsError,
+} from '../errors/customErrors';
 
 const prisma = new PrismaClient();
 
@@ -20,8 +25,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
   });
 
   if (userExists) {
-    res.status(400);
-    throw new Error('User already exists');
+    throw new UserExistsError(username);
   }
 
   // Hash password
@@ -42,8 +46,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
       username,
     });
   } else {
-    res.status(400);
-    throw new Error('Invalid user data');
+    throw new InternalServerError('Error occured while creating user');
   }
 });
 
@@ -77,20 +80,12 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
         token,
       });
     } else {
-      res.status(400);
-      throw new Error('Invalid credentials');
+      throw new AuthorizationError('Invalid username or password');
     }
   } catch (e) {
     console.log(`controllers/user.ts:56 e: ${e}`);
   }
 });
-
-// // @desc    Get user data
-// // @route   GET /api/users/me
-// // @access  Private
-// const getMe = asyncHandler(async (req: Request, res: Response) => {
-//   res.status(200).json(req.user);
-// });
 
 // Generate JWT for an id
 const generateToken = (id: string): string => {

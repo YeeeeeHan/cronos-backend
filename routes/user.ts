@@ -21,7 +21,7 @@ const router: Router = express.Router();
  *                 example: john_doe
  *               password:
  *                 type: string
- *                 example: password123
+ *                 example: secretpassword
  *     responses:
  *       201:
  *         description: User registered successfully
@@ -50,7 +50,7 @@ router.route('/').post(registerUser);
  *                 example: john_doe
  *               password:
  *                 type: string
- *                 example: password123
+ *                 example: secretpassword
  *     responses:
  *       200:
  *         description: User authenticated successfully

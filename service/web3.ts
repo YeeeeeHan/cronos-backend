@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import { ethers, providers } from 'ethers';
 import { config } from '../config/config';
-import { TokenInfo } from '../utils/types';
+import { TokenInfo } from '../utils/types/types';
 import { ERC20ABI } from './abi/ERC20ABI';
 dotenv.config();
 

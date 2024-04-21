@@ -31,23 +31,39 @@ app.use(`/${BALANCE}`, balanceRouter);
 app.use(`/${TOKEN_BALANCE}`, tokenBalanceRouter);
 app.use(`/${USERS}`, userRouter);
 app.get(`/`, (req: Request, res: Response) => {
-  res.status(200).json({ message: 'Welcome to Cronons Backend' });
+  res.status(200).json({ message: 'Welcome to Cronos Backend' });
 });
-// Serve swagger docs using Swagger UI
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// 3. 404 Middleware
-app.use((req: Request, res: Response, next: NextFunction) => {
-  const error = new NotFoundError(req.originalUrl);
-  res.status(404).json({ error: error.name, errorMessage: error.message });
-});
+// 3. Swagger Middleware
+app.use(`/api-docs`, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // 4. Error Handling Middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  // If the error is an instance of CustomError, return the error name and message
   if (err instanceof CustomError) {
-    return res.status(400).json({ error: err.name, errorMessage: err.message });
+    return res.status(err.statusCode.code).json({
+      code: err.statusCode.code,
+      error: err.name,
+      errorMessage: err.message,
+    });
   }
-  res.status(500).json({ error: 'Internal server error' });
+
+  // If the error is not an instance of CustomError, return a generic error message
+  res.status(500).json({
+    code: 500,
+    error: 'Internal server error',
+    errorMessage: err.message,
+  });
+});
+
+// 5. 404 Middleware
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const error = new NotFoundError(req.originalUrl);
+  res.status(error.statusCode.code).json({
+    code: error.statusCode.code,
+    error: error.name,
+    errorMessage: error.message,
+  });
 });
 
 app.listen(port, () => {});
