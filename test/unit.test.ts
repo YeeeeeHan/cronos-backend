@@ -1,4 +1,6 @@
+import { BigNumber } from 'ethers';
 import { isValidAddress } from '../middlewares/verifiers';
+import { parseBalance } from '../utils/utils';
 
 describe('isValidAddress()', () => {
   it('should return true for a valid address', () => {
@@ -15,5 +17,22 @@ describe('isValidAddress()', () => {
 
     const invalidAddress3 = '0xe208376';
     expect(isValidAddress(invalidAddress3)).toBe(false);
+  });
+});
+
+describe('parseBalance()', () => {
+  it('should ', () => {
+    const balance = '1234.12345';
+    expect(parseBalance(balance)).toBe('1,234.123');
+  });
+
+  it('should ', () => {
+    const balance = BigNumber.from('1234123000000000000000');
+    expect(parseBalance(balance)).toBe('1,234.123');
+  });
+
+  it('should ', () => {
+    const balance = 1234.12345;
+    expect(parseBalance(balance)).toBe('1,234.123');
   });
 });
