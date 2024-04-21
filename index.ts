@@ -1,7 +1,9 @@
 // src/index.ts
 import dotenv from 'dotenv';
 import express, { Express, NextFunction, Request, Response } from 'express';
+import swaggerUi from 'swagger-ui-express';
 import { config } from './config/config';
+import swaggerSpec from './config/swaggerconfig';
 import { pingDB } from './controllers/ping';
 import { CustomError, NotFoundError } from './errors/customErrors';
 import balanceRouter from './routes/balance';
@@ -31,6 +33,8 @@ app.use(`/${USERS}`, userRouter);
 app.get(`/`, (req: Request, res: Response) => {
   res.status(200).json({ message: 'Welcome to Cronons Backend' });
 });
+// Serve swagger docs using Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // 3. 404 Middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
