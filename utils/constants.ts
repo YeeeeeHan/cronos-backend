@@ -7,6 +7,7 @@ export const USERS = 'users';
 export const LOCAL = 'local';
 export const DEV = 'dev';
 export const PROD = 'prod';
+export const TEST = 'test';
 export const MAINNET = 'mainnet';
 export const TESTNET = 'testnet';
 export const RPC_MAINNET = 'RPC_MAINNET';

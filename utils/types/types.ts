@@ -32,3 +32,18 @@ export interface ResponseError {
   errorName: string;
   errorMessage: string;
 }
+
+export interface GetBalanceResponse {
+  walletAddress: string;
+  balance: string;
+  formatBalance: string;
+}
+
+export interface GetTokenBalanceResponse {
+  walletAddress: string;
+  tokenAddress: string;
+  balance: string;
+  formatBalance: string;
+  tokenName: string;
+  tokenSymbol: string;
+}

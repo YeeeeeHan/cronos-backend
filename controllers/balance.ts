@@ -8,6 +8,7 @@ import {
 } from '../errors/customErrors';
 import { isValidAddress } from '../middlewares/verifiers';
 import { getCROBalance } from '../service/web3';
+import { GetBalanceResponse } from '../utils/types/types';
 import { parseBalance } from '../utils/utils';
 
 // @desc    Get CRO balance of walletAddress
@@ -32,11 +33,14 @@ const getBalance = asyncHandler(async (req: Request, res: Response) => {
     // Get the balance of the CRO token for the given address
     const balance = await getCROBalance(walletAddress);
 
-    res.status(200).json({
+    // Build response
+    const responseData: GetBalanceResponse = {
       walletAddress,
       balance,
       formatBalance: parseBalance(ethers.utils.formatEther(balance)),
-    });
+    };
+
+    res.status(200).json(responseData);
   } catch (e: any) {
     throw new InternalServerError('Error occured while fetching balance');
   }

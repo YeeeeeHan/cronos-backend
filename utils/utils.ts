@@ -14,9 +14,13 @@ export const parseBalance = (
     return '0';
   }
   if (typeof value === 'number') {
-    return String(roundDown(value, decimalsToDisplay));
+    return String(
+      roundDown(value, decimalsToDisplay).toLocaleString(undefined)
+    );
   } else if (typeof value === 'string') {
-    return String(roundDown(parseFloat(value), decimalsToDisplay));
+    return String(
+      roundDown(parseFloat(value), decimalsToDisplay).toLocaleString(undefined)
+    );
   }
 
   return roundDown(

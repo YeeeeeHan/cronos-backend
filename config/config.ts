@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { DEV, LOCAL, MAINNET, PROD, TESTNET } from '../utils/constants';
+import { DEV, LOCAL, MAINNET, PROD, TEST, TESTNET } from '../utils/constants';
 dotenv.config();
 
 export const config = {
@@ -7,11 +7,12 @@ export const config = {
   isLocal: process.env.NODE_ENV === LOCAL,
   isDev: process.env.NODE_ENV === DEV,
   isProd: process.env.NODE_ENV === PROD,
+  isTest: process.env.NODE_ENV === TEST,
 
   // Chain
   CHAIN: process.env.CHAIN,
-  isMain: process.env.CHAIN === MAINNET,
-  isTest: process.env.CHAIN === TESTNET,
+  isMainnet: process.env.CHAIN === MAINNET,
+  isTestnet: process.env.CHAIN === TESTNET,
   RPC_MAINNET: process.env.RPC_MAINNET,
   RPC_TESTNET: process.env.RPC_TESTNET,
 

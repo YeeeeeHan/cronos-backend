@@ -7,7 +7,7 @@ dotenv.config();
 
 // Returns the provider based on the chain
 export function getProvider(): providers.Provider {
-  if (config.isMain) {
+  if (config.isMainnet) {
     return new ethers.providers.JsonRpcProvider(config.RPC_MAINNET);
   } else {
     return new ethers.providers.JsonRpcProvider(config.RPC_TESTNET);

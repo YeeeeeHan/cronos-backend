@@ -17,6 +17,12 @@ const prisma = new PrismaClient();
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
   const { username, password } = req.body;
 
+  console.log(`controllers/user.ts:52 req.body: ${username} ${password}`);
+
+  if (!username || !password) {
+    throw new AuthorizationError('Invalid user data');
+  }
+
   // Check if user exists
   const userExists = await prisma.user.findUnique({
     where: {
@@ -41,6 +47,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
   });
 
   if (user) {
+    console.log(`controllers/user.ts:52 user: ${JSON.stringify(user)}`);
     res.status(201).json({
       id: user.id,
       username,
@@ -57,6 +64,10 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
   console.log(`controllers/user.ts:52 req.body: ${JSON.stringify(req.body)}`);
   const { username, password } = req.body;
 
+  if (!username || !password) {
+    throw new AuthorizationError('Missing username or password');
+  }
+
   try {
     // Check for username
     const user = await prisma.user.findUnique({
@@ -68,7 +79,10 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
     console.log(`controllers/user.ts:52 user: ${JSON.stringify(user)}`);
 
     console.log(
-      `await bcrypt.compare(password, user.password) ${await bcrypt.compare(password, user!.password)}`
+      `await bcrypt.compare(password, user.password) ${await bcrypt.compare(
+        password,
+        user!.password
+      )}`
     );
 
     // If user exists and password matches
@@ -84,6 +98,7 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
     }
   } catch (e) {
     console.log(`controllers/user.ts:56 e: ${e}`);
+    throw e;
   }
 });
 

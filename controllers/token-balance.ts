@@ -9,6 +9,7 @@ import {
 } from '../errors/customErrors';
 import { isValidAddress } from '../middlewares/verifiers';
 import { getCRC20Balance, getCRC20Information } from '../service/web3';
+import { GetTokenBalanceResponse } from '../utils/types/types';
 import { parseBalance } from '../utils/utils';
 
 // @desc    Get CRC20 token balance of an address
@@ -39,14 +40,17 @@ const getTokenBalance = asyncHandler(async (req: Request, res: Response) => {
     // Get the symbol of the ERC20 token for the given address
     const tokenInfo = await getCRC20Information(tokenAddress);
 
-    res.status(200).json({
+    // Build response
+    const responseData: GetTokenBalanceResponse = {
       walletAddress,
       tokenAddress,
       balance,
       formatBalance: parseBalance(ethers.utils.formatEther(balance)),
       tokenName: tokenInfo.name,
       tokenSymbol: tokenInfo.symbol,
-    });
+    };
+
+    res.status(200).json(responseData);
   } catch (e: any) {
     throw new InternalServerError('Error occured while fetching token balance');
   }
