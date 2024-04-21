@@ -26,3 +26,9 @@ export interface EVMError {
   transaction: Transaction;
   errorInfo: ErrorInfo;
 }
+
+export interface ResponseError {
+  code: number;
+  errorName: string;
+  errorMessage: string;
+}

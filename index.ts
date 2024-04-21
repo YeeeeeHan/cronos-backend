@@ -4,12 +4,16 @@ import express, { Express, NextFunction, Request, Response } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import { config } from './config/config';
 import swaggerSpec from './config/swaggerconfig';
-import { pingDB } from './controllers/ping';
-import { CustomError, NotFoundError } from './errors/customErrors';
+import {
+  CustomError,
+  InternalServerError,
+  NotFoundError,
+} from './errors/customErrors';
 import balanceRouter from './routes/balance';
 import tokenBalanceRouter from './routes/token-balance';
 import userRouter from './routes/user';
 import { BALANCE, TOKEN_BALANCE, USERS } from './utils/constants';
+import { ResponseError } from './utils/types/types';
 
 dotenv.config();
 
@@ -41,19 +45,23 @@ app.use(`/api-docs`, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   // If the error is an instance of CustomError, return the error name and message
   if (err instanceof CustomError) {
-    return res.status(err.statusCode.code).json({
+    const responseData: ResponseError = {
       code: err.statusCode.code,
-      error: err.name,
+      errorName: err.name,
       errorMessage: err.message,
-    });
+    };
+    return res.status(err.statusCode.code).json(responseData);
   }
 
   // If the error is not an instance of CustomError, return a generic error message
-  res.status(500).json({
-    code: 500,
-    error: 'Internal server error',
-    errorMessage: err.message,
-  });
+  const unexpectedError = new InternalServerError('Unexpected error');
+  const responseData: ResponseError = {
+    code: unexpectedError.statusCode.code,
+    errorName: unexpectedError.name,
+    errorMessage: unexpectedError.message,
+  };
+
+  return res.status(unexpectedError.statusCode.code).json(responseData);
 });
 
 // 5. 404 Middleware
