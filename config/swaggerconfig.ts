@@ -1,20 +1,23 @@
 import swaggerJsdoc, { Options } from 'swagger-jsdoc';
-import { version } from "../package.json";
+import { version } from '../package.json';
 
 // Options for the swagger jsdoc
 const options: Options = {
   definition: {
-    openapi: "3.0.0",
+    openapi: '3.0.3',
     info: {
-      title: "REST API Docs",
+      title: 'REST API Docs',
       version,
     },
     components: {
       securitySchemes: {
         bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
+          type: 'apiKey',
+          in: 'header',
+          name: 'Authorization',
+          description: 'Bearer token to access these api endpoints',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
         },
       },
     },

@@ -18,7 +18,7 @@ const router: Router = express.Router();
  *             properties:
  *               username:
  *                 type: string
- *                 example: john_doe
+ *                 example: cronos_tester
  *               password:
  *                 type: string
  *                 example: secretpassword
@@ -47,7 +47,7 @@ router.route('/').post(registerUser);
  *             properties:
  *               username:
  *                 type: string
- *                 example: john_doe
+ *                 example: cronos_tester
  *               password:
  *                 type: string
  *                 example: secretpassword

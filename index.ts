@@ -4,6 +4,7 @@ import express, { Express, NextFunction, Request, Response } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import { config } from './config/config';
 import swaggerSpec from './config/swaggerconfig';
+import { pingDB } from './controllers/ping';
 import {
   CustomError,
   InternalServerError,
