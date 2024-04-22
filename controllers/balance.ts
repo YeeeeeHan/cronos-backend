@@ -20,12 +20,12 @@ const getBalance = asyncHandler(async (req: Request, res: Response) => {
 
   const { walletAddress } = req.params;
 
-  // Check if the wallet address and token address are empty
+  // Check if the wallet address are empty
   if (!walletAddress) {
     throw new MissingInputError('walletAddress is missing');
   }
 
-  // Validate the wallet address and token address
+  // Validate the wallet address
   if (!isValidAddress(walletAddress)) {
     throw new InvalidWalletAddressError(walletAddress);
   }

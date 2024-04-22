@@ -2,6 +2,7 @@ import request from 'supertest';
 import { UserExistsError } from '../errors/customErrors';
 import { app } from '../index';
 
+// Welcome endpoint
 describe('GET /', () => {
   it('responds with "Welcome to Cronos Backend', async () => {
     const response = await request(app).get('/');

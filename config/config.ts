@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import { DEV, LOCAL, MAINNET, PROD, TEST, TESTNET } from '../utils/constants';
 dotenv.config();
 
+// Config object to store all the environment variables
 export const config = {
   ENV: process.env.NODE_ENV,
   isLocal: process.env.NODE_ENV === LOCAL,

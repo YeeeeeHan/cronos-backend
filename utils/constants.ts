@@ -12,9 +12,3 @@ export const MAINNET = 'mainnet';
 export const TESTNET = 'testnet';
 export const RPC_MAINNET = 'RPC_MAINNET';
 export const RPC_TESTNET = 'RPC_TESTNET';
-
-// Error constants
-// Codes
-export const CODE_CALL_EXCEPTION = 'CALL_EXCEPTION';
-// Methods
-export const METHOD_BALANCEOF = 'balanceOf(address)';

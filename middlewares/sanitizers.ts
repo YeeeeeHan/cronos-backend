@@ -4,11 +4,10 @@ export const sanitizePathParams = (
   res: Response,
   next: NextFunction
 ) => {
-  // obtain all path parameters if they exist
+  // trim all path params
   for (const param in req.params) {
     req.params[param] = req.params[param] ? trimInput(req.params[param]) : '';
   }
-
   next();
 };
 

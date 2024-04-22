@@ -35,10 +35,10 @@ const getTokenBalance = asyncHandler(async (req: Request, res: Response) => {
   }
 
   try {
-    // Get the balance of the ERC20 token for the given address
+    // Get the balance of the CRC20 token for the given address
     const balance = await getCRC20Balance(tokenAddress, walletAddress);
 
-    // Get the symbol of the ERC20 token for the given address
+    // Get the symbol of the CRC20 token for the given address
     const tokenInfo = await getCRC20Information(tokenAddress);
 
     // Build response

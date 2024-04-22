@@ -10,10 +10,17 @@ const prisma = new PrismaClient();
 interface AuthRequest extends Request {
   user?: User | null;
 }
+
+// Middleware to protect routes
 const protect = asyncHandler(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
     // TODO: Remove
     log.info(`[protect]: req.headers: ${JSON.stringify(req.headers)}`);
+    log.info(
+      `[protect]: req.headers.authorization ${JSON.stringify(
+        req.headers.authorization
+      )}`
+    );
     if (!req.headers.authorization) {
       throw new AuthorizationError('No token');
     }

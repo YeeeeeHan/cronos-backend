@@ -28,6 +28,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
     },
   });
 
+  // Return user exists error
   if (userExists) {
     throw new UserExistsError(username);
   }
