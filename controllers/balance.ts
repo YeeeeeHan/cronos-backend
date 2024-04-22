@@ -5,9 +5,11 @@ import {
   InternalServerError,
   InvalidWalletAddressError,
   MissingInputError,
+  RPCError,
 } from '../errors/customErrors';
 import { isValidAddress } from '../middlewares/verifiers';
 import { getCROBalance } from '../service/web3';
+import { NETWORK_ERROR } from '../utils/constants';
 import { log } from '../utils/logger';
 import { GetBalanceResponse } from '../utils/types/types';
 import { parseBalance } from '../utils/utils';
@@ -43,7 +45,10 @@ const getBalance = asyncHandler(async (req: Request, res: Response) => {
 
     res.status(200).json(responseData);
   } catch (e: any) {
-    log.error(`[getBalance]: ${e}`);
+    if (e.code && e.code === NETWORK_ERROR) {
+      throw new RPCError('RPC network error.');
+    }
+    log.error(`[getBalance] Unexpected error: ${e}`);
     throw new InternalServerError('Error occured while fetching balance');
   }
 });

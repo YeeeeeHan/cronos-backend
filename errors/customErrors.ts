@@ -74,3 +74,9 @@ export class AuthorizationError extends CustomError {
     super(`Unauthorized: ${message}`, STATUS_CODE_401);
   }
 }
+
+export class RPCError extends CustomError {
+  constructor(message: string) {
+    super(`RPC Error: ${message}`, STATUS_CODE_500);
+  }
+}

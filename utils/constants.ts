@@ -12,3 +12,6 @@ export const MAINNET = 'mainnet';
 export const TESTNET = 'testnet';
 export const RPC_MAINNET = 'RPC_MAINNET';
 export const RPC_TESTNET = 'RPC_TESTNET';
+
+// Error constants
+export const NETWORK_ERROR = 'NETWORK_ERROR';
