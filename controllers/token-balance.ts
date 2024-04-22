@@ -9,6 +9,7 @@ import {
 } from '../errors/customErrors';
 import { isValidAddress } from '../middlewares/verifiers';
 import { getCRC20Balance, getCRC20Information } from '../service/web3';
+import { log } from '../utils/logger';
 import { GetTokenBalanceResponse } from '../utils/types/types';
 import { parseBalance } from '../utils/utils';
 
@@ -16,7 +17,7 @@ import { parseBalance } from '../utils/utils';
 // @route   GET /token-balance/:address/:tokenAddress
 // @access  JWT protected
 const getTokenBalance = asyncHandler(async (req: Request, res: Response) => {
-  console.log(`[getTokenBalance]: req.params: ${JSON.stringify(req.params)}`);
+  log.info(`[getTokenBalance]: req.params: ${JSON.stringify(req.params)}`);
 
   const { walletAddress, tokenAddress } = req.params;
 
@@ -52,6 +53,7 @@ const getTokenBalance = asyncHandler(async (req: Request, res: Response) => {
 
     res.status(200).json(responseData);
   } catch (e: any) {
+    log.error(`[getTokenBalance]: ${e}`);
     throw new InternalServerError('Error occured while fetching token balance');
   }
 });

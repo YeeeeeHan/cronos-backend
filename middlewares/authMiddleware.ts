@@ -4,6 +4,7 @@ import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
 import { config } from '../config/config';
 import { AuthorizationError } from '../errors/customErrors';
+import { log } from '../utils/logger';
 const prisma = new PrismaClient();
 
 interface AuthRequest extends Request {
@@ -11,7 +12,8 @@ interface AuthRequest extends Request {
 }
 const protect = asyncHandler(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
-    console.log(`[protect]: req.headers: ${JSON.stringify(req.headers)}`);
+    // TODO: Remove
+    log.info(`[protect]: req.headers: ${JSON.stringify(req.headers)}`);
     if (!req.headers.authorization) {
       throw new AuthorizationError('No token');
     }
@@ -38,7 +40,6 @@ const protect = asyncHandler(
 
       next();
     } catch (error) {
-      console.log(error);
       throw new AuthorizationError('Token verification failed');
     }
   }

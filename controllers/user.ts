@@ -17,8 +17,6 @@ const prisma = new PrismaClient();
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
   const { username, password } = req.body;
 
-  console.log(`controllers/user.ts:52 req.body: ${username} ${password}`);
-
   if (!username || !password) {
     throw new AuthorizationError('Invalid user data');
   }
@@ -47,7 +45,6 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
   });
 
   if (user) {
-    console.log(`controllers/user.ts:52 user: ${JSON.stringify(user)}`);
     res.status(201).json({
       id: user.id,
       username,
@@ -61,7 +58,6 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
 // @route   POST /users/login
 // @access  Public
 const loginUser = asyncHandler(async (req: Request, res: Response) => {
-  console.log(`controllers/user.ts:52 req.body: ${JSON.stringify(req.body)}`);
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -76,15 +72,6 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
       },
     });
 
-    console.log(`controllers/user.ts:52 user: ${JSON.stringify(user)}`);
-
-    console.log(
-      `await bcrypt.compare(password, user.password) ${await bcrypt.compare(
-        password,
-        user!.password
-      )}`
-    );
-
     // If user exists and password matches
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = generateToken(user.id);
@@ -97,7 +84,6 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
       throw new AuthorizationError('Invalid username or password');
     }
   } catch (e) {
-    console.log(`controllers/user.ts:56 e: ${e}`);
     throw e;
   }
 });

@@ -14,6 +14,7 @@ import balanceRouter from './routes/balance';
 import tokenBalanceRouter from './routes/token-balance';
 import userRouter from './routes/user';
 import { BALANCE, TOKEN_BALANCE, USERS } from './utils/constants';
+import { log } from './utils/logger';
 import { ResponseError } from './utils/types/types';
 
 dotenv.config();
@@ -21,9 +22,9 @@ dotenv.config();
 export const app: Express = express();
 export const port = process.env.PORT || 4000;
 
-console.log(`[index.ts]: Running on "${config.ENV}" environment`);
-console.log(`[index.ts]: Running on "${config.CHAIN}" chain`);
-console.log(`[index.ts]: Server is running at http://localhost:${port}`);
+log.info(`[index.ts]: Running on "${config.ENV}" environment`);
+log.info(`[index.ts]: Running on "${config.CHAIN}" chain`);
+log.info(`[index.ts]: Server is running at http://localhost:${port}`);
 
 pingDB();
 
@@ -61,6 +62,8 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     errorName: unexpectedError.name,
     errorMessage: unexpectedError.message,
   };
+
+  log.error(`[index.ts]: Unexpected error: ${err}`);
 
   return res.status(unexpectedError.statusCode.code).json(responseData);
 });
