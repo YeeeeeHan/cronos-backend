@@ -1,12 +1,10 @@
-# cronos-backend
-
-## Table of Contents
+# Table of Contents
 - [Project Overview](#project-overview)
 - [Evaluation Instructions](#evaluation-instructions)
 - [Design Decisions](#design-decisions)
 - [Test](#test)
 
-## Project Overview
+# Project Overview
 ### Endpoints
 
 ``` bash
@@ -37,7 +35,7 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
     └── types         - Contains project's typescript types
 ```
 
-## Evaluation Instructions
+# Evaluation Instructions
 ### Installation
   ```bash
   yarn
@@ -53,33 +51,31 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   yarn test
   ```
 
-### End point evaluation via Curl
-#### 1. Register a user request
+## End point evaluation via Curl
+### 1. Register a user request
   ```bash
   # Request
   curl -X POST \
   -H "Content-Type: application/json" \
   -d '{"username":"cronos_tester","password":"secret_password"}' \
   http://localhost:4000/users 
-  ```
-  Expected response:
-  ```json
+
+  # Response
   {
     "id":"13b9e106-2b5a-495d-90db-c92d61ecf9a0",
     "username":"cronos_tester"
   }
   ```
 
-#### 2. Login and obtain JWT
+### 2. Login and obtain JWT
   ```bash
   # Request
   curl -X POST \
   -H "Content-Type: application/json" \
   -d '{"username":"cronos_tester","password":"secret_password"}' \
   http://localhost:4000/users/login
-  ```
-  Expected response:
-  ```json
+  
+  # Response
   {
    "id":"13b9e106-2b5a-495d-90db-c92d61ecf9a0",
    "username":"cronos_tester",
@@ -87,15 +83,14 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   } 
   ```
 
-#### 3. Obtain CRO balance of walletAddress (pass JWT into \<token\>)
+### 3. Obtain CRO balance of walletAddress (pass JWT into \<token\>)
   ```bash
   # Request
   curl -X GET \
   -H "Authorization: Bearer <token>" \
   http://localhost:4000/balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48
-  ```
-  Expected response:
-  ```json
+
+  # Response
   {
    "walletAddress":"0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48",
    "balance":"1749143036000495154",
@@ -103,15 +98,14 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   }
   ```
 
-#### 4. Obtain CRC20 token balance of walletAddress (pass JWT into \<token\>)
+### 4. Obtain CRC20 token balance of walletAddress (pass JWT into \<token\>)
   ```bash
   # Request
   curl -X GET \
   -H "Authorization: Bearer <token>" \
   http://localhost:4000/token-balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48/0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23
-  ```
-  Expected response:
-  ```json
+
+  # Response
   {
    "walletAddress":"0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48",
    "tokenAddress":"0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23",
@@ -122,11 +116,11 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   }
   ```
 
-### Endpoint evaluation via Swagger 
+## Endpoint evaluation via Swagger 
 TODO: WIP
 
-## Design Decisions
-### Project Tech Stack
+# Design Decisions
+## Project Tech Stack
 - Web Server Framework - `Express.js` + `typescript`
 - Database - `Postgres`
 - Database ORM - `Prisma`
@@ -136,7 +130,7 @@ TODO: WIP
 - Environment Handling - `Dotenv`
 - API documentation - `Swagger`
 
-### Initialization Process - `index.ts`
+## Initialization Process - `index.ts`
 1. The `index.ts` file serves as the main entry point of the server, handling the initialization of the application.
 2. **Environment Variables**: The application reads environment variables to configure its behavior. It logs out the corresponding information for debugging purposes.
 3. **Database Connection**: Before proceeding, the application pings the database to ensure a stable connection. If the connection fails, the application panics.
@@ -147,66 +141,112 @@ TODO: WIP
     - Error Handling Middleware: Handles all errors that are caught and returns appropriate error responses.
     - 404 Middleware: Handles requests to unknown routes and returns a 404 error response.
 
-### Routes
+## Routes
 1. All routes will be managed via the `routes/routes.ts` file.
 
-### Routers
+## Routers
 1. There are 3 routers, `balanceRouter`, `tokenBalanceRouter`, and `userRouter`, each corresponding to a file in the `routes/` folder.
 1. Each router uses the `express.Router` class to create modular, mountable route handlers.
 1. Each router will be mounted at their respective paths e.g. `/balance/...` and `/token-balance/...`.
 1. Each router handles a variety of HTTP requests, path parameters and allows middlewares to be loaded in them.
 
-### Controllers
+## Controllers
 1. Controllers are specific business logic to interact with the database or blockchain.
 1. The `controllers/userController.ts` file contains all user-related logic such as register and login. `registerUser()` registers a user by creating a user in the Postgres database. Before it creates a user it will perform basic checks to ensure username is not taken, and will hash user's password before storing it. `loginUser()` verifies user credential input and returns a JWT.
 1. The `controllers/tokenBalanceController.ts` and `controllers/balanceController.ts` file contains controllers to interact with the blockchain, via functions in the `service` folder.
 
-### Service
-1. The `service` folder contains reusable business logic such as common web3 logic.
-2. This includes the logic to build CRC20 contracts, obtain CRC20 contract information, as well as obtain CRO balance of a wallet.
+## Service
+The `service` folder contains reusable business logic such as common web3 logic. This includes the logic to build CRC20 contracts, obtain CRC20 contract information, as well as obtain CRO balance of a wallet.
 
-### Middlewares
+## Middlewares
 Middleware functions have access to the request and response objects, allowing the auth, sanitisation and verification functions to be performed on the request and response obects before they reach the main controller logic.
 
-#### AuthMiddleware
-1. The `middlewares/authMiddleware.ts` file contains the `protect` middleware function that verifies the JWT token provided in the Authorization header of requests.
-1. JWT is placed in the Authorization header of requests instead of the URL as the JWT acts as an API key and might be exposed in the URL.
-1. It uses the `jsonweb token` package to verify the token's validity and expiry.
-1. The JWT is created with the `jsonwebtoken.sign()` function which signs the user's ID and the project's `JWT_SECREET`, during a successful user login.
-1. The JWT is verified with the `jsonwebtoken.verify()` function which verifies the JWT (if it is signed with the correct `JWT_SECRET`) and checks if it is expired.
+### AuthMiddleware
+The `middlewares/authMiddleware.ts` file contains the `protect` middleware function that verifies the JWT token provided in the Authorization header of requests. JWT is placed in the Authorization header of requests instead of the URL as the JWT acts as an API key and might be exposed in the URL. It uses the `jsonweb token` package to verify the token's validity and expiry. The JWT is created with the `jsonwebtoken.sign()` function which signs the user's ID and the project's `JWT_SECREET`, during a successful user login. The JWT is verified with the `jsonwebtoken.verify()` function which verifies the JWT (if it is signed with the correct `JWT_SECRET`) and checks if it is expired.
 
-#### ErrorMiddleware
-1. The errorMiddleware handles errors that occur during the request-response cycle and returns appropriate error responses to the client.
-1. It first checks if the error is part of the project's `CustomError` and returns a custom error's information.
-1. Otherwise, it will returns a general 500 internal server error. 
-1. More information about `CustomError` can be found in this [section](#error-handling-and-logging)
+### ErrorMiddleware
+ The errorMiddleware handles errors that occur during the request-response cycle and returns appropriate error responses to the client. It first checks if the error is part of the project's `CustomError` and returns a custom error's information. Otherwise, it will returns a general 500 internal server error.  More information about `CustomError` can be found in this [section](#error-handling-and-logging)
 
-#### SanitizeMiddleware 
-1. The `middlewares/sanitizeMiddleware.ts` file contains the `sanitizePathParams` middleware function that sanitizes user path inputs
+### SanitizeMiddleware 
+ The `middlewares/sanitizeMiddleware.ts` file contains the `sanitizePathParams` middleware function that sanitizes user path inputs
 
-### Error handling and Logging
-	- custom vs generic errors
-	- allows for Main error type + specific error message
-	- Logging practice in error handling -> only notify us if there are unhandled internal server errors
-  - RPC errors -> log out error.log
-  - Status code handling
+## Error handling and Monitoring
+When working with API servers, it is important to handle errors properly to provide meaningful responses to clients.
 
-### Database
-  - Different types of database
-  - Database migrations
-  - schema considerations - UUID for ID
-### Develop Experience
-	- Swagger
-	- Prisma? database migrations
-	- nodemon
-	- Prettier
-	- developer flow > develop > prisma push > migrations > unit test
+There are 3 considerations surrounding Error handling and Monitoring:
+1. CustomErrors
+1. Errormiddleware
+1. Logging
 
-### CICD Decisions OR development lifecycle + web3 
+```ts
+// Custom Error class
+export class CustomError extends Error {
+  statusCode: StatusCode;
+
+  constructor(message: string, statusCode: StatusCode) {
+    super(message);
+    this.name = this.constructor.name;
+    this.statusCode = statusCode;
+  }
+}
+```
+
+`CustomErrors` are specifed in the `errors/customErrors.ts` file, laying out all possible errors that a server might occur in an organised manner. Every `CustomError` contains a corresponding `StatusCode` to be returned to the client and a well-defined error message. In order to provide meaningful error message to the client, each `CustomError` has a fixed message header (e.g. `User already exists:` and `Missing Input:`) that is unique to the `CustomError`, as well as an situation-specific argument that is passed in to the constructor when the error occurs (e.g. `  throw new UserExistsError(username)`). The arguments supplements the error message by information the client about the specifics of the error (e.g. `username` that already exists, or `input` that is missing).
+
+```ts
+// Error when username already exists
+export class UserExistsError extends CustomError {
+  constructor(username: string) {
+    super(`User already exists: ${username}`, STATUS_CODE_409);
+  }
+}
+
+// Error when a required input is missing
+export class MissingInputError extends CustomError {
+  constructor(input: string) {
+    super(`Missing Input: ${input}`, STATUS_CODE_400);
+  }
+}
+```
+
+[Errormiddleware](#errormiddleware) helps to handle errors through the request lifecycle in a graceful manner, by catching all errors that a thrown during the request. This allows us to parse the error by first checking `if (err instanceof CustomError)` to provide meaningful error message to the client. Else, a general 500 Internal Server Error will be returned to the client.
+
+Logging allows us to monitor the health of the server via helpful logs which provides valuable insights into troubleshooting issues as well as tracking of important events like unexpected errors. This project uses Pino as a light-weight logger, allows logging of different severity levels. `log.Info` for general server logs and `log.Error` during RPC errors or Internal Server Errors. Ideally, all `log.Error` should trigger a monitoring system to notify developers about the error.
+
+## Database
+This project use Postgres as it is a tried and tested solution. A database is needed to store user information to facilitate registeration and login. 
+
+### Prisma
+Prisma is used as a Postgres ORM for easy database modelling, migrations and querying.
+
+Database modelling is done via the `prisma/schema.prisma` file, which allows us to specify constraints on the models that are used. 
+
+Prisma's migration tool tracks changes in the database schema, allowing version control and consistency across different environments. When changes are made to the schema, Prisma generates migration files that contain SQL commands to update the database schema accordingly. Running npx prisma migrate dev applies these migration changes to the database, ensuring that the database schema matches the Prisma schema.
+
+The PrismaClient class provides an interface for querying the database using Prisma's query builder. Example:
+```ts
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
+// Check if user exists
+const userExists = await prisma.user.findUnique({
+  where: {
+    username,
+  },
+});
+```
+
+
+## Development lifecycle
+This is the project's development lifecycle:
+1. Run `docker-compose up -d` to provision a local postgres instance
+2. 
+
+CICD Decisions OR development lifecycle + web3 
 - Start docker
 - Prisma migrate
 
-### Environment variables 
+## Environment variables 
   - env variables --> talk about the different types
   - Segregation of concerns
   - test using dotenv-cli
@@ -218,15 +258,22 @@ Middleware functions have access to the request and response objects, allowing t
 
   - Switching between chains
 
-### Others
-	- Hashing of passwords
+## Others
   - constants
   - Types.ts
 
+## Develop Experience
+In terms of developer experience
 
-## Test
+	- Swagger
+	- Prisma? database migrations
+	- nodemon
+	- Prettier
+	- developer flow > develop > prisma push > migrations > unit test
 
-### Test set up
+# Test
+
+## Test set up
 - jest
 - docker-compose
 
@@ -241,7 +288,7 @@ Middleware functions have access to the request and response objects, allowing t
 - test using dotenv-cli
 
 
-### Test cases
+## Test cases
 
 ```
 ==== Register user ====
@@ -262,12 +309,12 @@ curl -X GET \
   http://localhost:4000/balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48
 ```
 
-#### Balance
+### Balance
 Success - http://localhost:4000/balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48
 Path params has spaces - http://localhost:4000/balance/%200xe208376740faa7b5c7ac4ce17b038bf8e1f15f48%20 
 
 invalid wallet address - http://localhost:4000/balance/0e208376740faa7b5c7ac4ce17b038bf8e1f15f48
-#### Token Balance
+### Token Balance
 Success - http://localhost:4000/token-balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48/0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23 
 Path params has spaces - http://localhost:4000/token-balance/%200xe208376740faa7b5c7ac4ce17b038bf8e1f15f48%20/%200x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23
 
