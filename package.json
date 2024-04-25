@@ -4,11 +4,9 @@
   "main": "server.js",
   "scripts": {
     "dev": "yarn docker:up && sleep 1 && prisma generate && dotenv -e .env.local -- npx prisma migrate dev && dotenv -e .env.local -- nodemon index.ts",
-    "build": "prisma generate && npx tsc",
-    "start": "node dist/index.js",
+    "test": "yarn docker:down && yarn docker:up && sleep 1 && dotenv -e .env.test -- npx prisma migrate dev && dotenv -e .env.test -- jest && yarn docker:down",
     "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down --volumes",
-    "test": "yarn docker:down && yarn docker:up && sleep 1 && dotenv -e .env.test -- npx prisma migrate dev && dotenv -e .env.test -- jest && yarn docker:down"
+    "docker:down": "docker-compose down --volumes"
   },
   "dependencies": {
     "@prisma/client": "5.7.1",
