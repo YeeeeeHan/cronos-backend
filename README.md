@@ -166,6 +166,7 @@ The response should look like this:
     - Swagger Middleware: Sets up Swagger UI for API documentation at the `/api-docs` endpoint.
     - Error Handling Middleware: Handles all errors that are caught and returns appropriate error responses.
     - 404 Middleware: Handles requests to unknown routes and returns a 404 error response.
+5. **Server Start**: The server starts listening on the specified port.
 
 ## Routes
 1. All routes will be managed via the `routes/routes.ts` file.
@@ -235,12 +236,12 @@ export class MissingInputError extends CustomError {
 }
 ```
 
-[Errormiddleware](#errormiddleware) helps to handle errors through the request lifecycle in a graceful manner, by catching all errors that a thrown during the request. This allows us to parse the error by first checking `if (err instanceof CustomError)` to provide meaningful error message to the client. Else, a general 500 Internal Server Error will be returned to the client.
+[ErrorMiddleware](#errormiddleware) helps to handle errors through the request lifecycle in a graceful manner, by catching all errors that a thrown during the request. This allows us to parse the error by first checking `if (err instanceof CustomError)` to provide meaningful error message to the client. Else, a general 500 Internal Server Error will be returned to the client.
 
 Logging allows us to monitor the health of the server via helpful logs which provides valuable insights into troubleshooting issues as well as tracking of important events like unexpected errors. This project uses Pino as a light-weight logger, allows logging of different severity levels. `log.Info` for general server logs and `log.Error` during RPC errors or Internal Server Errors. Ideally, all `log.Error` should trigger a monitoring system to notify developers about the error.
 
 ## Database
-This project use Postgres as it is a tried and tested solution. A database is needed to store user information to facilitate registeration and login. 
+This project uses Postgres as it is a tried and tested solution. A database is needed to store user information to facilitate registeration and login. 
 
 ### Prisma
 Prisma is used as a Postgres ORM for easy database modelling, migrations and querying.
@@ -294,22 +295,14 @@ The `utils/constants.ts` file contains string constants that are used in the pro
 The `utils/types/` folder abstracts all Typescript types and interfaces that the project uses to allow sharing of types between packages. This ensures type-safety and improves development experience.
 
 
-## Develop Experience
+## Developer Experience
 Here are the following features to improve developer experience in the project:
 1. `.prettierrc` - ensures that file formatting remains the same across different developer environments
 2. `swagger` - an interactive API docs for client team or even other backend developers to allow smoother exchange of information
 3. `nodemon` - automatically restart Node.js on file change to speed up development lifecycles
 
-	- Swagger
-	- Prisma? database migrations
-	- nodemon
-	- Prettier
-	- developer flow > develop > prisma push > migrations > unit test
-
 ## Testing
-Main testing frameworks used are `jest` and `supertest`.
-
-Here is the flow for running tests during `yarn test`:
+The testing frameworks used are `jest` and `supertest`. Here is the flow for running tests during `yarn test`:
 1. Spin down docker containers related to previous test to clear previous test data
 1. Spin up docker container to provision a new database, to allow tests to be run against a dedicated test environment separate from other environments.
 1. Run migrations scripts to ensure DB schema is updated
