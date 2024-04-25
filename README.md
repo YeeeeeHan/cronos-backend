@@ -54,7 +54,7 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   ```
 
 ### End point evaluation via Curl
-  1. Register a user request
+#### 1. Register a user request
   ```bash
   # Request
   curl -X POST \
@@ -71,7 +71,7 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   }
   ```
 
-  2. Login and obtain JWT
+#### 2. Login and obtain JWT
   ```bash
   # Request
   curl -X POST \
@@ -89,7 +89,7 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   } 
   ```
 
-  3. Obtain CRO balance of walletAddress (pass JWT into \<token\>)
+#### 3. Obtain CRO balance of walletAddress (pass JWT into \<token\>)
   ```bash
   # Request
   curl -X GET \
@@ -105,7 +105,7 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   }
   ```
 
-  4. Obtain CRC20 token balance of walletAddress (pass JWT into \<token\>)
+#### 4. Obtain CRC20 token balance of walletAddress (pass JWT into \<token\>)
   ```bash
   # Request
   curl -X GET \
