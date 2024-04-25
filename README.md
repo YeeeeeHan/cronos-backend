@@ -172,8 +172,10 @@ Middleware functions have access to the request and response objects, allowing t
 1. The JWT is created with the `jsonwebtoken.sign()` function which signs the user's ID and the project's `JWT_SECREET`, during a successful user login.
 1. The JWT is verified with the `jsonwebtoken.verify()` function which verifies the JWT (if it is signed with the correct `JWT_SECRET`) and checks if it is expired.
 
-### SanitizeMiddleware & VerifierMiddleware
-1. The `
+### Error
+
+### SanitizeMiddleware 
+1. The `middlewares/sanitizeMiddleware.ts` file contains the `sanitizePathParams` middleware function that sanitizes user path inputs
 
 
 protect Middleware: This middleware protects routes by verifying the JWT token provided in the Authorization header. It uses the jsonwebtoken package to verify the token's validity and retrieve the user information from the database based on the token's payload. If the token is valid, it attaches the user object to the request (req.user) for further processing in the route handler. If the token is invalid or missing, it throws an AuthorizationError.

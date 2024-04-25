@@ -4,7 +4,10 @@ import expressListRoutes from 'express-list-routes';
 import { config } from './config/config';
 import { pingDB } from './controllers/ping';
 import { parserMiddlewares } from './middlewares/built-in';
-import { NotFoundMiddleWare, errorMiddleware } from './middlewares/error';
+import {
+  NotFoundMiddleWare,
+  errorMiddleware,
+} from './middlewares/errorMiddleware';
 import { swagger } from './middlewares/swagger';
 import { routes } from './routes/routes';
 import { log } from './utils/logger';
