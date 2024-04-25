@@ -35,7 +35,11 @@ describe('Web3', () => {
 
   it('should throw NETWORK_ERROR if RPC url is invalid', async () => {
     const faultyProvider = new ethers.providers.JsonRpcProvider(invalidRPC);
-    const contract = new ethers.Contract(tokenAddress, ERC20ABI, getProvider());
+    const contract = new ethers.Contract(
+      tokenAddress,
+      ERC20ABI,
+      faultyProvider
+    );
 
     try {
       await contract.balanceOf(walletAddress);

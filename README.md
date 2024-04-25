@@ -10,16 +10,12 @@
 ### Endpoints
 
 ``` bash
-# Get CRO balance of a wallet
-GET      /balance/:walletAddress
-# Get CRC20 balance of a token in a wallet
-GET      /token-balance/:walletAddress/:tokenAddress
-# Register a user
-POST     /users/
-# Login a user
-POST     /users/login
-# Health check
-GET      /
+GET      http://localhost:4000/ # Health check
+GET      http://localhost:4000/balance/:walletAddress # Get CRO balance of a wallet
+GET      http://localhost:4000/token-balance/:walletAddress/:tokenAddress # Get CRC20 balance of a token in a wallet
+POST     http://localhost:4000/users/ # Register a user
+POST     http://localhost:4000/users/login # Login a user
+GET      http://localhost:4000/api-docs/ # Swagger docs
 ```
 
 ### Folder structure
@@ -30,14 +26,15 @@ GET      /
 ├── controllers       - Specific logic to interact with database or blockchain
 ├── errors            - Custom Errors
 ├── middlewares       - Functions that are run on routes
-├── prisma            - Postgres ORM
-│   └── migrations    - Migration scripts to track database config changes
-├── routes            - Endpoints
+├── prisma            - Handles the database ORM config, database schema and migration scripts for tracking changes
+│   └── migrations    
+│   └── schema.prisma 
+├── routes            - Endpoints handling and configuration
 ├── service           - Reusable business logic such as common web3 logic
 │   └── abi           
 ├── test              - Unit and integration tests
 └── utils             
-    └── types         - Contains typescript types
+    └── types         - Contains project's typescript types
 ```
 
 ## Evaluation Instructions
@@ -51,8 +48,12 @@ GET      /
   yarn dev
   ```
 
+### Run unit tests - (ensure Docker daemon is running)
+  ```bash
+  yarn test
+  ```
 
-### End point evaluation
+### End point evaluation via Curl
   1. Register a user request
   ```bash
   # Request
@@ -123,42 +124,40 @@ GET      /
   }
   ```
 
-
-4. 
-
-  - Installation instructions
-  - env variables --> talk about the different types
-  - run unit test
-  - swagger set up 
-  - login
-  - test token balance
-  - test balance
+### Endpoint evaluation via Swagger 
+TODO: WIP
 
 ## Design Decisions
 ### Project stack
+- Web Server Framework - `Express.js` + `typescript`
+- Database - `Postgres`
+- Database ORM - `Prisma`
+- Logger - `Pino`
+- Testing Framework - `Jest` & `supertest`
+- Containerisation - `Docker`
+- Environment Handling - `Dotenv`
+- API documentation - `Swagger`
 
-### Package.json and docker files & starting project
-- Start docker
-- Prisma migrate
-- 
+### Initialization Process - `index.ts`
+1. The `index.ts` file serves as the main entry point of the server, handling the initialization of the application.
+2. **Environment Variables**: The application reads environment variables to configure its behavior. It logs out the corresponding information for debugging purposes.
+3. **Database Connection**: Before proceeding, the application pings the database to ensure a stable connection. If the connection fails, the application panics.
+4. **Middleware Setup**:
+    - Body Parsing Middleware: Mount built-in middlewares such as `express.json()` and `express.urlencoded()` to parse data from body and html post form
+    - Router Middleware: Mounts various routers for handling different endpoints, such as `balance`, `token-balance`, and `user` endpoints.
+    - Swagger Middleware: Sets up Swagger UI for API documentation at the `/api-docs` endpoint.
+    - Error Handling Middleware: Handles all errors that are caught and returns appropriate error responses.
+    - 404 Middleware: Handles requests to unknown routes and returns a 404 error response.
 
 ### API management
+fu
+___
   - auth -> Sanitsation -> Validation -> 
   - routes
   - middleware
   - auth API keys - why in header and not URL - https://stackoverflow.com/questions/5517281/place-api-key-in-headers-or-url, Why JWT?
-  - 
+
 ### Web3
-### Environment variables 
-  - Segregation of concerns
-  - test using dotenv-cli
-
-  - local is for?
-  - dev is for? what other changes would you make?
-  - prod is for? what other changes would you make? (db URL stuff, cicd stuff)
-  - test
-
-  - Switching between chains
 
 
 ### Error handling & Logging
@@ -179,6 +178,23 @@ GET      /
 	- nodemon
 	- Prettier
 	- developer flow > develop > prisma push > migrations > unit test
+
+### CICD Decisions OR development lifecycle
+- Start docker
+- Prisma migrate
+
+### Environment variables 
+  - env variables --> talk about the different types
+  - Segregation of concerns
+  - test using dotenv-cli
+
+  - local is for?
+  - dev is for? what other changes would you make?
+  - prod is for? what other changes would you make? (db URL stuff, cicd stuff)
+  - test
+
+  - Switching between chains
+
 ### Others
 	- Hashing of passwords
   - constants

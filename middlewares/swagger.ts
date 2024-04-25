@@ -1,4 +1,6 @@
+import { Express } from 'express';
 import swaggerJsdoc, { Options } from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 import { version } from '../package.json';
 
 // Options for the swagger jsdoc
@@ -33,5 +35,9 @@ const options: Options = {
 
 // Initialize swagger-jsdoc
 const swaggerSpec = swaggerJsdoc(options);
+
+export function swagger(app: Express) {
+  app.use(`/api-docs`, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
 
 export default swaggerSpec;
