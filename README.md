@@ -40,12 +40,12 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   yarn
   ```
 
-### Set up
+### Set up - (ensure Docker daemon is running)
   ```bash
   yarn dev
   ```
 
-### Run unit tests - (ensure Docker daemon is running)
+### Run unit tests
   ```bash
   yarn test
   ```
