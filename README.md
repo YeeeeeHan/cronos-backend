@@ -237,33 +237,42 @@ const userExists = await prisma.user.findUnique({
 ```
 
 
-## Development lifecycle
+## Continuous Development lifecycle
 This is the project's development lifecycle:
 1. Run `docker-compose up -d` to provision a local postgres instance
-2. 
-
-CICD Decisions OR development lifecycle + web3 
-- Start docker
-- Prisma migrate
+2. Run `prisma generate` to build prisma query builder with latest schema
+3. Run  `npx prisma migrate dev` to update database schema with all relevant  database migrations
+4. Run `nodemon index.ts` to automatically restart Node.js on file change
+5. Use `dotenv -e <env-file>` to run commands according to various `.env` files 
+6. Run `yarn test` to ensure that all tests continue to pass after code change
 
 ## Environment variables 
-  - env variables --> talk about the different types
-  - Segregation of concerns
-  - test using dotenv-cli
+Environement variables in the form of `.env` files are used to manage sensistive or configurable data. Here are 4 environments with their corresponding `.env` files:
+1. `.env.local` - local development configuration
+1. `.env.dev` - dev configuration for testnet or dev branch
+1. `.env.prod` - production configuration for mainnet and main branch
+1. `.env.test` - test configuration
 
-  - local is for?
-  - dev is for? what other changes would you make?
-  - prod is for? what other changes would you make? (db URL stuff, cicd stuff)
-  - test
+Environment variables:
+- NODE_ENV - specifies the environment: local/dev/prod/test
+- CHAIN = specifies the chain: testnet/mainnet
+- PORT = specifies the port the server will be listening on
+- DATABASE_URL = database URL connection - ideally an instance hosted on 3rd party cloud services for reliability
+- JWT_SECRET = JWT secret
+- RPC_MAINNET = https://evm.cronos.org
+- RPC_TESTNET = https://evm-t3.cronos.org
 
-  - Switching between chains
+## Utils
+The `utils/constants.ts` file contains string constants that are used in the project. This ensures easy refactoring of strings in the future, and prevents unneccessary development errors.
 
-## Others
-  - constants
-  - Types.ts
+The `utils/types/` folder abstracts all Typescript types and interfaces that the project uses to allow sharing of types between packages. This ensures type-safety and improves development experience.
+
 
 ## Develop Experience
-In terms of developer experience
+Here are the following features to improve developer experience in the project:
+1. `.prettierrc` - ensures that file formatting remains the same across different developer environments
+2. `swagger` - an interactive API docs for client team or even other backend developers to allow smoother exchange of information
+3. `nodemon` - automatically restart Node.js on file change to speed up development lifecycles
 
 	- Swagger
 	- Prisma? database migrations
