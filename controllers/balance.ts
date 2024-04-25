@@ -46,6 +46,7 @@ const getBalance = asyncHandler(async (req: Request, res: Response) => {
     res.status(200).json(responseData);
   } catch (e: any) {
     if (e.code && e.code === NETWORK_ERROR) {
+      log.error(`[getBalance] RPC network error: ${e}`);
       throw new RPCError('RPC network error.');
     }
     log.error(`[getBalance] Unexpected error: ${e}`);
