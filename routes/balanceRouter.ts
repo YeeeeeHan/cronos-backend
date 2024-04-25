@@ -20,7 +20,7 @@ const router: Router = express.Router();
  *         required: true
  *         description: The wallet address for which to retrieve the balance.
  *       - in: header
- *         name: authorization
+ *         name: x-authorization
  *         schema:
  *           type: string
  *         required: true

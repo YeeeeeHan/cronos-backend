@@ -4,7 +4,6 @@ import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
 import { config } from '../config/config';
 import { AuthorizationError } from '../errors/customErrors';
-import { log } from '../utils/logger';
 const prisma = new PrismaClient();
 
 interface AuthRequest extends Request {
@@ -14,24 +13,20 @@ interface AuthRequest extends Request {
 // Middleware to protect routes
 const protect = asyncHandler(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
-    // TODO: Remove
-    log.info(`[protect]: req.headers: ${JSON.stringify(req.headers)}`);
-    log.info(
-      `[protect]: req.headers.authorization ${JSON.stringify(
-        req.headers.authorization
-      )}`
-    );
-    if (!req.headers.authorization) {
+    // Get authorisationHeader from header - "Bearer xxxx
+    const authorisationHeader = req.headers['x-authorization'] as String;
+
+    if (!authorisationHeader) {
       throw new AuthorizationError('No token');
     }
 
-    if (!req.headers.authorization.startsWith('Bearer')) {
+    if (!authorisationHeader.startsWith('Bearer')) {
       throw new AuthorizationError('Invalid token format');
     }
 
     try {
       // Get token from header - "Bearer xxxx"
-      const token = req.headers.authorization.split(' ')[1];
+      const token = authorisationHeader.split(' ')[1];
 
       // Verify token
       const decoded = jwt.verify(token, config.JWT_SECRET as jwt.Secret) as {

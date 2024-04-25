@@ -99,7 +99,7 @@ describe('GET /balance/:walletAddress', () => {
     // Invalid JWT
     const response2 = await request(app)
       .get('/balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48')
-      .set('Authorization', 'Bearer INVALID_TOKEN');
+      .set('x-authorization', 'Bearer INVALID_TOKEN');
     expect(response2.status).toBe(401);
   });
 
@@ -113,7 +113,7 @@ describe('GET /balance/:walletAddress', () => {
     // Get balance
     const getBalResponse = await request(app)
       .get('/balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48')
-      .set('Authorization', `Bearer ${loginResponse.body.token}`);
+      .set('x-authorization', `Bearer ${loginResponse.body.token}`);
     expect(getBalResponse.status).toBe(200);
     expect(Number(getBalResponse.body.balance)).toBeGreaterThan(0);
   });
@@ -128,7 +128,7 @@ describe('GET /balance/:walletAddress', () => {
     // Get balance
     const getTokenResponse = await request(app)
       .get('/balance/0xINVALID')
-      .set('Authorization', `Bearer ${loginResponse.body.token}`);
+      .set('x-authorization', `Bearer ${loginResponse.body.token}`);
     expect(getTokenResponse.status).toBe(400);
   });
 });
@@ -145,7 +145,7 @@ describe('GET /token-balance/:address/:tokenAddress', () => {
     // Invalid JWT
     const response2 = await request(app)
       .get('/balance/0x123')
-      .set('Authorization', 'Bearer INVALID_TOKEN');
+      .set('x-authorization', 'Bearer INVALID_TOKEN');
     expect(response2.status).toBe(401);
   });
 
@@ -161,7 +161,7 @@ describe('GET /token-balance/:address/:tokenAddress', () => {
       .get(
         '/token-balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48/0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23'
       )
-      .set('Authorization', `Bearer ${loginResponse.body.token}`);
+      .set('x-authorization', `Bearer ${loginResponse.body.token}`);
     expect(getTokenBalResponse.status).toBe(200);
     expect(Number(getTokenBalResponse.body.balance)).toBeGreaterThan(0);
   });
@@ -178,7 +178,7 @@ describe('GET /token-balance/:address/:tokenAddress', () => {
       .get(
         '/token-balance/0xINVALID/0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23'
       )
-      .set('Authorization', `Bearer ${loginResponse.body.token}`);
+      .set('x-authorization', `Bearer ${loginResponse.body.token}`);
     expect(getTokenResponse.status).toBe(400);
   });
 
@@ -194,7 +194,7 @@ describe('GET /token-balance/:address/:tokenAddress', () => {
       .get(
         '/token-balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48/0xINVALID'
       )
-      .set('Authorization', `Bearer ${loginResponse.body.token}`);
+      .set('x-authorization', `Bearer ${loginResponse.body.token}`);
     expect(getTokenResponse.status).toBe(400);
   });
 });

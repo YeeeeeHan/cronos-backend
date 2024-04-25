@@ -86,7 +86,7 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   ```bash
   # Request
   curl -X GET \
-  -H "Authorization: Bearer <token>" \
+  -H "x-authorization: Bearer <token>" \
   http://localhost:4000/balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48
 
   # Response
@@ -101,7 +101,7 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   ```bash
   # Request
   curl -X GET \
-  -H "Authorization: Bearer <token>" \
+  -H "x-authorization: Bearer <token>" \
   http://localhost:4000/token-balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48/0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23
 
   # Response
@@ -116,7 +116,13 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   ```
 
 ## Endpoint evaluation via Swagger 
-TODO: WIP
+### 1. Start server
+  ```bash
+  yarn dev
+  ```
+
+### 2. Navigate to [Swagger docs](http://localhost:4000/api-docs/#/)
+### 3. Register user
 
 # Design Decisions
 ## Project Tech Stack

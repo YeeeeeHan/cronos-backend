@@ -13,17 +13,25 @@ const router: Router = express.Router();
  *     description: Get the CRC20 token balance of a wallet address for a specific token address.
  *     parameters:
  *       - in: path
+ *         example: "0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48"
  *         name: address
  *         required: true
  *         description: The wallet address to check the balance for.
  *         schema:
  *           type: string
  *       - in: path
+ *         example: "0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23"
  *         name: tokenAddress
  *         required: true
  *         description: The address of the CRC20 token to check the balance for.
  *         schema:
  *           type: string
+ *       - in: header
+ *         name: x-authorization
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: JWT token in the format "Bearer {token}".
  *     responses:
  *       200:
  *         description: Successful operation. Returns the CRC20 token balance and information.
