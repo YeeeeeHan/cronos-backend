@@ -8,7 +8,7 @@ import {
   MissingInputError,
   RPCError,
 } from '../errors/customErrors';
-import { isValidAddress } from '../middlewares/verifiers';
+import { isValidAddress } from '../middlewares/verifierMiddleware';
 import { getCRC20Balance, getCRC20Information } from '../service/web3';
 import { NETWORK_ERROR } from '../utils/constants';
 import { log } from '../utils/logger';

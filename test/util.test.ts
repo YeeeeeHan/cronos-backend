@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers';
-import { isValidAddress } from '../middlewares/verifiers';
+import { isValidAddress } from '../middlewares/verifierMiddleware';
 import { parseBalance } from '../utils/utils';
 
 describe('isValidAddress()', () => {

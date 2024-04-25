@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 import { getBalance } from '../controllers/balance';
 import { protect } from '../middlewares/authMiddleware';
-import { sanitizePathParams } from '../middlewares/sanitizers';
+import { sanitizePathParams } from '../middlewares/sanitizeMiddleware';
 
 const router: Router = express.Router();
 

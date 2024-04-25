@@ -1,8 +1,8 @@
 import { Express, Request, Response } from 'express';
-import balanceRouter from '../routes/balance';
-import tokenBalanceRouter from '../routes/token-balance';
-import userRouter from '../routes/user';
 import { BALANCE, TOKEN_BALANCE, USERS } from '../utils/constants';
+import balanceRouter from './balanceRouter';
+import tokenBalanceRouter from './tokenBalanceRouter';
+import userRouter from './userRouter';
 
 export function routes(app: Express) {
   app.use(`/${BALANCE}`, balanceRouter);

@@ -128,7 +128,7 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
 TODO: WIP
 
 ## Design Decisions
-### Project stack
+### Project Tech Stack
 - Web Server Framework - `Express.js` + `typescript`
 - Database - `Postgres`
 - Database ORM - `Prisma`
@@ -143,14 +143,44 @@ TODO: WIP
 2. **Environment Variables**: The application reads environment variables to configure its behavior. It logs out the corresponding information for debugging purposes.
 3. **Database Connection**: Before proceeding, the application pings the database to ensure a stable connection. If the connection fails, the application panics.
 4. **Middleware Setup**:
-    - Body Parsing Middleware: Mount built-in middlewares such as `express.json()` and `express.urlencoded()` to parse data from body and html post form
+    - Body Parsing Middleware: Mount built-in middlewares such as `express.json()` and `express.urlencoded()` to parse data from body and html post form.
     - Router Middleware: Mounts various routers for handling different endpoints, such as `balance`, `token-balance`, and `user` endpoints.
     - Swagger Middleware: Sets up Swagger UI for API documentation at the `/api-docs` endpoint.
     - Error Handling Middleware: Handles all errors that are caught and returns appropriate error responses.
     - 404 Middleware: Handles requests to unknown routes and returns a 404 error response.
 
 ### API management
-fu
+
+### Routes
+1. All routes will be managed via the `routes/routes.ts` file.
+
+### Routers
+1. There are 3 routers, `balanceRouter`, `tokenBalanceRouter`, and `userRouter`, each corresponding to a file in the `routes/` folder.
+1. Each router uses the `express.Router` class to create modular, mountable route handlers.
+1. Each router will be mounted at their respective paths e.g. `/balance/...` and `/token-balance/...`.
+1. Each router handles a variety of HTTP requests, path parameters and allows middlewares to be loaded in them.
+
+### Controllers
+
+
+## Middlewares
+Middleware functions have access to the request and response objects, allowing the auth, sanitisation and verification functions to be performed on the request and response obects before they reach the main controller logic.
+
+### AuthMiddleware
+1. The `middlewares/authMiddleware.ts` file contains the `protect` middleware function that verifies the JWT token provided in the Authorization header of requests.
+1. It uses the `jsonwebtoken` package to verify the token's validity and expiry.
+1. The JWT is created with the `jsonwebtoken.sign()` function which signs the user's ID and the project's `JWT_SECREET`, during a successful user login.
+1. The JWT is verified with the `jsonwebtoken.verify()` function which verifies the JWT (if it is signed with the correct `JWT_SECRET`) and checks if it is expired.
+
+### Sanit
+
+
+protect Middleware: This middleware protects routes by verifying the JWT token provided in the Authorization header. It uses the jsonwebtoken package to verify the token's validity and retrieve the user information from the database based on the token's payload. If the token is valid, it attaches the user object to the request (req.user) for further processing in the route handler. If the token is invalid or missing, it throws an AuthorizationError.
+Input: Request, Response, NextFunction
+Output: Attaches user object to req if token is valid, else throws AuthorizationError.
+
+This middleware ensures that only authenticated users can access protected routes by verifying the JWT token provided in the request header. If the token is valid, it allows the request to proceed; otherwise, it returns an authorization error.
+
 ___
   - auth -> Sanitsation -> Validation -> 
   - routes
@@ -158,6 +188,7 @@ ___
   - auth API keys - why in header and not URL - https://stackoverflow.com/questions/5517281/place-api-key-in-headers-or-url, Why JWT?
 
 ### Web3
+
 
 
 ### Error handling & Logging
