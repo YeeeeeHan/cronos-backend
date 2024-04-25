@@ -161,6 +161,8 @@ TODO: WIP
 1. Each router handles a variety of HTTP requests, path parameters and allows middlewares to be loaded in them.
 
 ### Controllers
+1. Controllers are specific business logic to interact with the database or blockchain.
+1. The `User` co
 
 
 ## Middlewares
@@ -172,7 +174,8 @@ Middleware functions have access to the request and response objects, allowing t
 1. The JWT is created with the `jsonwebtoken.sign()` function which signs the user's ID and the project's `JWT_SECREET`, during a successful user login.
 1. The JWT is verified with the `jsonwebtoken.verify()` function which verifies the JWT (if it is signed with the correct `JWT_SECRET`) and checks if it is expired.
 
-### Error
+### ErrorMiddleware
+
 
 ### SanitizeMiddleware 
 1. The `middlewares/sanitizeMiddleware.ts` file contains the `sanitizePathParams` middleware function that sanitizes user path inputs

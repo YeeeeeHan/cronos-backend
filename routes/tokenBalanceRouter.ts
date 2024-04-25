@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { getTokenBalance } from '../controllers/token-balance';
+import { getTokenBalance } from '../controllers/tokenBalanceController';
 import { protect } from '../middlewares/authMiddleware';
 import { sanitizePathParams } from '../middlewares/sanitizeMiddleware';
 

@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { getBalance } from '../controllers/balance';
+import { getBalance } from '../controllers/balanceController';
 import { protect } from '../middlewares/authMiddleware';
 import { sanitizePathParams } from '../middlewares/sanitizeMiddleware';
 
