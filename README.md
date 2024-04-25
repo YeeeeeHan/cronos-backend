@@ -122,12 +122,12 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   ```
 
 ### 2. Navigate to [Swagger docs](http://localhost:4000/api-docs/#/)
-### 3. Register user
+### 3. Register a user request
 Click on `Try it out` and then click on `Execute`
 ![image](/public/1-register1.png)
 The response should look like this:
 ![image](/public/2-register2.png)
-### 4. Login
+### 4. Login and obtain JWT
 Click on `Try it out` and then click on `Execute`
 ![image](/public/3-login1.png)
 The response should look like this:
