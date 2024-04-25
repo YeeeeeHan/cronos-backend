@@ -62,9 +62,8 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   -d '{"username":"cronos_tester","password":"secret_password"}' \
   http://localhost:4000/users 
   ```
-
+  Expected response:
   ```json
-  # Response
   {
     "id":"13b9e106-2b5a-495d-90db-c92d61ecf9a0",
     "username":"cronos_tester"
@@ -79,9 +78,8 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   -d '{"username":"cronos_tester","password":"secret_password"}' \
   http://localhost:4000/users/login
   ```
-
+  Expected response:
   ```json
-  # Response
   {
    "id":"13b9e106-2b5a-495d-90db-c92d61ecf9a0",
    "username":"cronos_tester",
@@ -96,8 +94,8 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   -H "Authorization: Bearer <token>" \
   http://localhost:4000/balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48
   ```
+  Expected response:
   ```json
-  # Response
   {
    "walletAddress":"0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48",
    "balance":"1749143036000495154",
@@ -112,8 +110,8 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   -H "Authorization: Bearer <token>" \
   http://localhost:4000/token-balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48/0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23
   ```
+  Expected response:
   ```json
-  # Response
   {
    "walletAddress":"0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48",
    "tokenAddress":"0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23",
