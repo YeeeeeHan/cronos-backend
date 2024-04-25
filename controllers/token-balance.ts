@@ -8,12 +8,11 @@ import {
   MissingInputError,
   RPCError,
 } from '../errors/customErrors';
-import { isValidAddress } from '../middlewares/verifierMiddleware';
 import { getCRC20Balance, getCRC20Information } from '../service/web3';
 import { NETWORK_ERROR } from '../utils/constants';
 import { log } from '../utils/logger';
 import { GetTokenBalanceResponse } from '../utils/types/types';
-import { parseBalance } from '../utils/utils';
+import { isValidAddress, parseBalance } from '../utils/utils';
 
 // @desc    Get CRC20 token balance of an address
 // @route   GET /token-balance/:address/:tokenAddress

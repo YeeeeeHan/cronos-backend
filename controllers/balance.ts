@@ -7,12 +7,11 @@ import {
   MissingInputError,
   RPCError,
 } from '../errors/customErrors';
-import { isValidAddress } from '../middlewares/verifierMiddleware';
 import { getCROBalance } from '../service/web3';
 import { NETWORK_ERROR } from '../utils/constants';
 import { log } from '../utils/logger';
 import { GetBalanceResponse } from '../utils/types/types';
-import { parseBalance } from '../utils/utils';
+import { isValidAddress, parseBalance } from '../utils/utils';
 
 // @desc    Get CRO balance of walletAddress
 // @route   GET /balance/:walletAddress/
