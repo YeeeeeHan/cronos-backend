@@ -64,7 +64,7 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   ```
 
   ```json
-  // Response
+  # Response
   {
     "id":"13b9e106-2b5a-495d-90db-c92d61ecf9a0",
     "username":"cronos_tester"
@@ -81,7 +81,7 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   ```
 
   ```json
-  // Response
+  # Response
   {
    "id":"13b9e106-2b5a-495d-90db-c92d61ecf9a0",
    "username":"cronos_tester",
@@ -97,7 +97,7 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   http://localhost:4000/balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48
   ```
   ```json
-  // Response
+  # Response
   {
    "walletAddress":"0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48",
    "balance":"1749143036000495154",
@@ -113,7 +113,7 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
   http://localhost:4000/token-balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48/0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23
   ```
   ```json
-  // Response
+  # Response
   {
    "walletAddress":"0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48",
    "tokenAddress":"0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23",
@@ -149,8 +149,6 @@ TODO: WIP
     - Error Handling Middleware: Handles all errors that are caught and returns appropriate error responses.
     - 404 Middleware: Handles requests to unknown routes and returns a 404 error response.
 
-### API management
-
 ### Routes
 1. All routes will be managed via the `routes/routes.ts` file.
 
@@ -162,39 +160,28 @@ TODO: WIP
 
 ### Controllers
 1. Controllers are specific business logic to interact with the database or blockchain.
-1. The `User` co
+1. The `controllers/userController.ts` file contains all user-related logic such as register and login. `registerUser()` registers a user by creating a user in the Postgres database. Before it creates a user it will perform basic checks to ensure username is not taken, and will hash user's password before storing it. `loginUser()` verifies user credential input and returns a JWT.
+1. The `controllers/tokenBalanceController.ts` and `controllers/balanceController.ts` file contains controllers to interact with the blockchain, via functions in the `service` folder.
 
+### Service
 
-## Middlewares
+### Middlewares
 Middleware functions have access to the request and response objects, allowing the auth, sanitisation and verification functions to be performed on the request and response obects before they reach the main controller logic.
 
-### AuthMiddleware
+#### AuthMiddleware
 1. The `middlewares/authMiddleware.ts` file contains the `protect` middleware function that verifies the JWT token provided in the Authorization header of requests.
-1. It uses the `jsonwebtoken` package to verify the token's validity and expiry.
+1. JWT is placed in the Authorization header of requests instead of the URL as the JWT acts as an API key and might be exposed in the URL.
+1. It uses the `jsonweb token` package to verify the token's validity and expiry.
 1. The JWT is created with the `jsonwebtoken.sign()` function which signs the user's ID and the project's `JWT_SECREET`, during a successful user login.
 1. The JWT is verified with the `jsonwebtoken.verify()` function which verifies the JWT (if it is signed with the correct `JWT_SECRET`) and checks if it is expired.
 
-### ErrorMiddleware
+#### ErrorMiddleware
 
 
-### SanitizeMiddleware 
+#### SanitizeMiddleware 
 1. The `middlewares/sanitizeMiddleware.ts` file contains the `sanitizePathParams` middleware function that sanitizes user path inputs
 
-
-protect Middleware: This middleware protects routes by verifying the JWT token provided in the Authorization header. It uses the jsonwebtoken package to verify the token's validity and retrieve the user information from the database based on the token's payload. If the token is valid, it attaches the user object to the request (req.user) for further processing in the route handler. If the token is invalid or missing, it throws an AuthorizationError.
-Input: Request, Response, NextFunction
-Output: Attaches user object to req if token is valid, else throws AuthorizationError.
-
-This middleware ensures that only authenticated users can access protected routes by verifying the JWT token provided in the request header. If the token is valid, it allows the request to proceed; otherwise, it returns an authorization error.
-
-___
-  - auth -> Sanitsation -> Validation -> 
-  - routes
-  - middleware
-  - auth API keys - why in header and not URL - https://stackoverflow.com/questions/5517281/place-api-key-in-headers-or-url, Why JWT?
-
 ### Web3
-
 
 
 ### Error handling & Logging
