@@ -2,7 +2,6 @@
 - [Project Overview](#project-overview)
 - [Evaluation Instructions](#evaluation-instructions)
 - [Design Decisions](#design-decisions)
-- [Test](#test)
 
 # Project Overview
 ### Endpoints
