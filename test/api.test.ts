@@ -11,8 +11,8 @@ describe('GET /', () => {
   });
 });
 
-// General tests
-describe('General Tests', () => {
+// Invalid routes
+describe('Invalid routes ', () => {
   it('should return 404 for invalid routes', async () => {
     const response = await request(app).get('/invalid-route');
     expect(response.status).toBe(404);
@@ -24,14 +24,14 @@ describe('POST /users', () => {
   it('responds with 201 if user is registered successfully', async () => {
     const response = await request(app)
       .post('/users')
-      .send({ username: 'username123', password: 'password123' });
+      .send({ username: 'api-test-123', password: 'password123' });
     expect(response.status).toBe(201);
   });
 
   it('responds with 409 if username already exists', async () => {
     const response = await request(app)
       .post('/users')
-      .send({ username: 'username123', password: 'password123' });
+      .send({ username: 'api-test-123', password: 'password123' });
     expect(response.status).toBe(409);
     expect(response.body.errorName).toBe(new UserExistsError('-').name);
   });
@@ -58,7 +58,7 @@ describe('POST /users/login', () => {
   it('responds with 200 if user is authenticated successfully', async () => {
     const response = await request(app)
       .post('/users/login')
-      .send({ username: 'username123', password: 'password123' });
+      .send({ username: 'api-test-123', password: 'password123' });
     expect(response.status).toBe(200);
   });
 
@@ -81,7 +81,7 @@ describe('POST /users/login', () => {
   it('responds with 401 if password is invalid', async () => {
     const response = await request(app)
       .post('/users/login')
-      .send({ username: 'username123', password: 'WRONG_PASSWORD' });
+      .send({ username: 'api-test-123', password: 'WRONG_PASSWORD' });
     expect(response.status).toBe(401);
     expect(response.body.errorName).toBe('AuthorizationError');
   });
@@ -107,7 +107,7 @@ describe('GET /balance/:walletAddress', () => {
     // Login
     const loginResponse = await request(app)
       .post('/users/login')
-      .send({ username: 'username123', password: 'password123' });
+      .send({ username: 'api-test-123', password: 'password123' });
     expect(loginResponse.status).toBe(200);
 
     // Get balance
@@ -118,18 +118,18 @@ describe('GET /balance/:walletAddress', () => {
     expect(Number(getBalResponse.body.balance)).toBeGreaterThan(0);
   });
 
-  it('responds with 204 if walletAddress is invalid', async () => {
+  it('responds with 400 if walletAddress is invalid', async () => {
     // Login
     const loginResponse = await request(app)
       .post('/users/login')
-      .send({ username: 'username123', password: 'password123' });
+      .send({ username: 'api-test-123', password: 'password123' });
     expect(loginResponse.status).toBe(200);
 
     // Get balance
     const getTokenResponse = await request(app)
       .get('/balance/0xINVALID')
       .set('Authorization', `Bearer ${loginResponse.body.token}`);
-    expect(getTokenResponse.status).toBe(204);
+    expect(getTokenResponse.status).toBe(400);
   });
 });
 
@@ -153,10 +153,10 @@ describe('GET /token-balance/:address/:tokenAddress', () => {
     // Login
     const loginResponse = await request(app)
       .post('/users/login')
-      .send({ username: 'username123', password: 'password123' });
+      .send({ username: 'api-test-123', password: 'password123' });
     expect(loginResponse.status).toBe(200);
 
-    // Get balance
+    // Get token balance
     const getTokenBalResponse = await request(app)
       .get(
         '/token-balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48/0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23'
@@ -166,11 +166,11 @@ describe('GET /token-balance/:address/:tokenAddress', () => {
     expect(Number(getTokenBalResponse.body.balance)).toBeGreaterThan(0);
   });
 
-  it('responds with 204 if address is invalid', async () => {
+  it('responds with 400 if address is invalid', async () => {
     // Login
     const loginResponse = await request(app)
       .post('/users/login')
-      .send({ username: 'username123', password: 'password123' });
+      .send({ username: 'api-test-123', password: 'password123' });
     expect(loginResponse.status).toBe(200);
 
     // Get balance
@@ -179,14 +179,14 @@ describe('GET /token-balance/:address/:tokenAddress', () => {
         '/token-balance/0xINVALID/0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23'
       )
       .set('Authorization', `Bearer ${loginResponse.body.token}`);
-    expect(getTokenResponse.status).toBe(204);
+    expect(getTokenResponse.status).toBe(400);
   });
 
-  it('responds with 204 if tokenAddress is invalid', async () => {
+  it('responds with 400 if tokenAddress is invalid', async () => {
     // Login
     const loginResponse = await request(app)
       .post('/users/login')
-      .send({ username: 'username123', password: 'password123' });
+      .send({ username: 'api-test-123', password: 'password123' });
     expect(loginResponse.status).toBe(200);
 
     // Get balance
@@ -195,6 +195,6 @@ describe('GET /token-balance/:address/:tokenAddress', () => {
         '/token-balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48/0xINVALID'
       )
       .set('Authorization', `Bearer ${loginResponse.body.token}`);
-    expect(getTokenResponse.status).toBe(204);
+    expect(getTokenResponse.status).toBe(400);
   });
 });
