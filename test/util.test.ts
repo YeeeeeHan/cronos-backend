@@ -20,17 +20,17 @@ describe('isValidAddress()', () => {
 });
 
 describe('parseBalance()', () => {
-  it('should ', () => {
+  it('string input', () => {
     const balance = '1234.12345';
     expect(parseBalance(balance)).toBe('1,234.123');
   });
 
-  it('should ', () => {
+  it('BigNumber input', () => {
     const balance = BigNumber.from('1234123000000000000000');
     expect(parseBalance(balance)).toBe('1,234.123');
   });
 
-  it('should ', () => {
+  it('Number input', () => {
     const balance = 1234.12345;
     expect(parseBalance(balance)).toBe('1,234.123');
   });
