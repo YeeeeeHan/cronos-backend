@@ -3,13 +3,25 @@ version: '3.9'
 
 # The containers that compose the project
 services:
-  db:
+  db-local:
     image: postgres:13
     restart: always
-    container_name: integration-tests-prisma
+    container_name: local-prisma
+    ports:
+      - '5434:5432'
+    environment:
+      POSTGRES_USER: prisma
+      POSTGRES_PASSWORD: prisma
+      POSTGRES_DB: local
+      
+  db-test:
+    image: postgres:13
+    restart: always
+    container_name: tests-prisma
     ports:
       - '5433:5432'
     environment:
       POSTGRES_USER: prisma
       POSTGRES_PASSWORD: prisma
       POSTGRES_DB: tests
+

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "main": "server.js",
   "scripts": {
-    "dev": "prisma generate && nodemon index.ts",
+    "dev": "yarn docker:up && sleep 1 && prisma generate && dotenv -e .env.local -- npx prisma migrate dev && dotenv -e .env.local -- nodemon index.ts",
     "build": "prisma generate && npx tsc",
     "start": "node dist/index.js",
     "docker:up": "docker-compose up -d",
