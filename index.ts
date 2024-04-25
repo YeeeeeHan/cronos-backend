@@ -1,6 +1,7 @@
 // src/index.ts
 import dotenv from 'dotenv';
 import express, { Express, NextFunction, Request, Response } from 'express';
+import expressListRoutes from 'express-list-routes';
 import swaggerUi from 'swagger-ui-express';
 import { config } from './config/config';
 import swaggerSpec from './config/swaggerconfig';
@@ -77,5 +78,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     errorMessage: error.message,
   });
 });
+
+// 6. List all routes
+expressListRoutes(app, { prefix: '' });
 
 app.listen(port, () => {});
