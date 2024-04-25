@@ -162,6 +162,8 @@ TODO: WIP
 1. The `controllers/tokenBalanceController.ts` and `controllers/balanceController.ts` file contains controllers to interact with the blockchain, via functions in the `service` folder.
 
 ### Service
+1. The `service` folder contains reusable business logic such as common web3 logic.
+2. This includes the logic to build CRC20 contracts, obtain CRC20 contract information, as well as obtain CRO balance of a wallet.
 
 ### Middlewares
 Middleware functions have access to the request and response objects, allowing the auth, sanitisation and verification functions to be performed on the request and response obects before they reach the main controller logic.
@@ -174,21 +176,20 @@ Middleware functions have access to the request and response objects, allowing t
 1. The JWT is verified with the `jsonwebtoken.verify()` function which verifies the JWT (if it is signed with the correct `JWT_SECRET`) and checks if it is expired.
 
 #### ErrorMiddleware
-
+1. The errorMiddleware handles errors that occur during the request-response cycle and returns appropriate error responses to the client.
+1. It first checks if the error is part of the project's `CustomError` and returns a custom error's information.
+1. Otherwise, it will returns a general 500 internal server error. 
+1. More information about `CustomError` can be found in this [section](#error-handling-and-logging)
 
 #### SanitizeMiddleware 
 1. The `middlewares/sanitizeMiddleware.ts` file contains the `sanitizePathParams` middleware function that sanitizes user path inputs
 
-### Web3
-
-
-### Error handling & Logging
+### Error handling and Logging
 	- custom vs generic errors
 	- allows for Main error type + specific error message
 	- Logging practice in error handling -> only notify us if there are unhandled internal server errors
   - RPC errors -> log out error.log
-  
-### Status code handling
+  - Status code handling
 
 ### Database
   - Different types of database
@@ -201,7 +202,7 @@ Middleware functions have access to the request and response objects, allowing t
 	- Prettier
 	- developer flow > develop > prisma push > migrations > unit test
 
-### CICD Decisions OR development lifecycle
+### CICD Decisions OR development lifecycle + web3 
 - Start docker
 - Prisma migrate
 
