@@ -1,4 +1,3 @@
-// src/index.ts
 import dotenv from 'dotenv';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import expressListRoutes from 'express-list-routes';
@@ -27,6 +26,7 @@ log.info(`[index.ts]: Running on "${config.ENV}" environment`);
 log.info(`[index.ts]: Running on "${config.CHAIN}" chain`);
 log.info(`[index.ts]: Server is running at http://localhost:${port}`);
 
+// 0. Ping DB to check connection
 pingDB();
 
 // 1. Body Parsing Middleware

@@ -7,7 +7,7 @@ export const pingDB = async () => {
   try {
     await prisma.$queryRaw`SELECT 1`;
   } catch (error) {
-    log.info(`[pingDB]: ${error}`);
+    log.error(`[pingDB]: ${error}`);
     process.exit(1);
   }
 };
