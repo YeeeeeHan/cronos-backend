@@ -123,6 +123,27 @@ GET      http://localhost:4000/api-docs/ # Swagger docs
 
 ### 2. Navigate to [Swagger docs](http://localhost:4000/api-docs/#/)
 ### 3. Register user
+Click on `Try it out` and then click on `Execute`
+![image](/public/1-register1.png)
+The response should look like this:
+![image](/public/2-register2.png)
+### 4. Login
+Click on `Try it out` and then click on `Execute`
+![image](/public/3-login1.png)
+The response should look like this:
+![image](/public/4-login2.png)
+### 5. Query wallet CRO balance
+Copy the `token` from the response above, and enter it into the `x-authorization` field in the following format `Bear <token>`. Click on `Try it out` and then click on `Execute`
+![image](/public/5-balance1.png)
+The response should look like this:
+![image](/public/6-balance2.png)
+### 6. Query wallet CRC20 token balance
+Copy the `token` from the response above, and enter it into the `x-authorization` field in the following format `Bear <token>`. Click on `Try it out` and then click on `Execute`
+![image](/public/7-tokenbal1.png)
+The response should look like this:
+![image](/public/8-tokenbal2.png)
+
+
 
 # Design Decisions
 ## Project Tech Stack
