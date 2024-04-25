@@ -1,5 +1,4 @@
 import {
-  STATUS_CODE_204,
   STATUS_CODE_400,
   STATUS_CODE_401,
   STATUS_CODE_404,
@@ -50,14 +49,14 @@ export class MissingInputError extends CustomError {
 // Error when an invalid wallet address is provided
 export class InvalidWalletAddressError extends CustomError {
   constructor(walletAddress: string) {
-    super(`Invalid Wallet Address: ${walletAddress}`, STATUS_CODE_204);
+    super(`Invalid Wallet Address: ${walletAddress}`, STATUS_CODE_400);
   }
 }
 
 // Error when an invalid token address is provided
 export class InvalidTokenAddressError extends CustomError {
   constructor(tokenAddress: string) {
-    super(`Invalid Token Address: ${tokenAddress}`, STATUS_CODE_204);
+    super(`Invalid Token Address: ${tokenAddress}`, STATUS_CODE_400);
   }
 }
 
