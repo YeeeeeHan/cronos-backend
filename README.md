@@ -280,52 +280,67 @@ Here are the following features to improve developer experience in the project:
 	- Prettier
 	- developer flow > develop > prisma push > migrations > unit test
 
-# Test
+## Testing
+Main testing frameworks used are `jest` and `supertest`.
 
-## Test set up
-- jest
-- docker-compose
-
-- Clearing of test data 
-- Use a different set of database credentials for api tests
-- using docker
-- using dotenv-cli for multiple environments 
-- integration tests - https://www.prisma.io/docs/orm/prisma-client/testing/integration-testing
-- Integration tests will be run against a database in a **dedicated test environment** instead of the production or development environments.
-- `--volumes` removes volumes associated with containers.
-- Explain the full procedure of the unit test
-- test using dotenv-cli
+Here is the flow for running tests during `yarn test`:
+1. Spin down docker containers related to previous test to clear previous test data
+1. Spin up docker container to provision a new database, to allow tests to be run against a dedicated test environment separate from other environments.
+1. Run migrations scripts to ensure DB schema is updated
+1. Begin jest tests according to the `.env.test` environment variables
 
 
-## Test cases
+## Test Cases
+### api.test.ts
+The `test/api.test.ts` file contains integration tests, and are route-specific. They are end-to-end tests that covers routes, controllers, and middleware operations. Here are the test cases:
 
 ```
-==== Register user ====
-curl -X POST \
-  -H "Content-Type: application/json" \
-  -d '{"username":"john_doe","password":"secretpassword"}' \
-  http://localhost:4000/users
-
-==== Login user ====
-curl -X POST \
-  -H "Content-Type: application/json" \
-  -d '{"username":"john_doe","password":"secretpassword"}' \
-  http://localhost:4000/users/login
-
-=== Normal request ===
-curl -X GET \
-  -H "Authorization: Bearer <token>" \
-  http://localhost:4000/balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48
+  GET /
+    ✓ responds with "Welcome to Cronos Backend
+  Invalid routes 
+    ✓ should return 404 for invalid routes
+  POST /users
+    ✓ responds with 201 if user is registered successfully
+    ✓ responds with 409 if username already exists
+    ✓ responds with 401 if username is missing from body
+    ✓ responds with 401 if password is missing from body
+  POST /users/login
+    ✓ responds with 200 if user is authenticated successfully
+    ✓ responds with 401 if username is missing from body
+    ✓ responds with 401 if password is missing from body
+    ✓ responds with 401 if password is invalid (68 ms)
+  GET /balance/:walletAddress
+    ✓ responds with 401 if JWT is missing or invalid
+    ✓ responds with 200 if JWT token and wallet address is valid
+    ✓ responds with 400 if walletAddress is invalid
+  GET /token-balance/:address/:tokenAddress
+    ✓ responds with 401 if JWT is missing or invalid
+    ✓ responds with 200 if JWT token and address is valid. Also responds with token balance
+    ✓ responds with 400 if address is invalid
+    ✓ responds with 400 if tokenAddress is invalid
 ```
 
-### Balance
-Success - http://localhost:4000/balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48
-Path params has spaces - http://localhost:4000/balance/%200xe208376740faa7b5c7ac4ce17b038bf8e1f15f48%20 
+### web3.test.ts
+The `test/web3.test.ts` file contains unit tests for service logic. It contains test cases related to web3 contracts and RPC errors. Here are the test cases:
+ ```
+    ✓ should return the provider based on the chain
+    ✓ should return the contract instance of the CRC20 token
+    ✓ should return the balance of the CRC20 token for the given address
+    ✓ should return the balance of the CRO token for the given address
+    ✓ should throw NETWORK_ERROR if RPC url is invalid
+ ```
 
-invalid wallet address - http://localhost:4000/balance/0e208376740faa7b5c7ac4ce17b038bf8e1f15f48
-### Token Balance
-Success - http://localhost:4000/token-balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48/0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23 
-Path params has spaces - http://localhost:4000/token-balance/%200xe208376740faa7b5c7ac4ce17b038bf8e1f15f48%20/%200x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23
 
-Invalid wallet address - http://localhost:4000/token-balance/0xe208376740faa75c7ac4ce17b038bf8e1f15f48/0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23
-Invalid token address - http://localhost:4000/token-balance/0xe208376740faa7b5c7ac4ce17b038bf8e1f15f48/05c7f8a570d578ed84e63fdfa7b1ee72deae1ae23
+
+### util.test.ts
+The `test/util.test.ts` file contains unit tests for the utils folder. Here are the test cases:
+```
+  isValidAddress()
+    ✓ should return true for a valid address
+    ✓ should return false for an invalid address
+  parseBalance()
+    ✓ string input
+    ✓ BigNumber input
+    ✓ Number input
+
+```
